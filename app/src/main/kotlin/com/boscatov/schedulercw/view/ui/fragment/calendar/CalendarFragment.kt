@@ -16,7 +16,7 @@ class CalendarFragment : Fragment() {
     lateinit var taskListViewModel: CalendarViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_task_list, container, false)
+        return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,4 +9,8 @@
               android:name="com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment"
               android:label="TaskListFragment"
               tools:layout="@layout/fragment_task_list" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment"
+        android:label="CalendarFragment" />
 </navigation>

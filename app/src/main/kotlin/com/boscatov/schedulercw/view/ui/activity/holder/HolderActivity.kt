@@ -1,9 +1,11 @@
 package com.boscatov.schedulercw.view.ui.activity.holder
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -27,16 +29,27 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         activityHolderBottomNV.setOnNavigationItemSelectedListener(this)
         initializeBottomNavigationView()
+        setupToolbar()
 
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        when (p0.itemId) {
-//            R.id.bottomMenuCalendarAction ->
-//            R.id.bottomMenuHomeAction ->
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.bottomMenuCalendarAction -> navController.navigate(R.id.calendarFragment)
+            R.id.bottomMenuHomeAction -> navController.navigate(R.id.taskListFragment)
 //            R.id.bottomMenuStatsAction ->
         }
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                activityHolderDrawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initializeBottomNavigationView() {
@@ -46,5 +59,13 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
             else -> R.id.bottomMenuHomeAction
         }
         activityHolderBottomNV.selectedItemId = id
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(activityHolderToolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
+        }
     }
 }
