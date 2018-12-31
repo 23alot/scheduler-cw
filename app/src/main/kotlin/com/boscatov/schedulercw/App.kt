@@ -1,5 +1,11 @@
 package com.boscatov.schedulercw
 
-class App {
+import android.app.Application
+import com.boscatov.schedulercw.di.ToothpickInitializer
 
+class App : Application() {
+    override fun onCreate() {
+        super.onCreate()
+        ToothpickInitializer.initialize(this)
+    }
 }

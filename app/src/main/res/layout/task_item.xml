@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="3dp"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="100dp">
+
+        <TextView
+            android:id="@+id/taskItemStartTimeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:text="09:00"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/taskItemEndTimeTV"
+            app:layout_constraintEnd_toEndOf="@+id/taskItemEndTimeTV"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/taskItemEndTimeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:padding="8dp"
+            android:text="10:00"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/taskItemColorLineIV"
+            app:layout_constraintEnd_toEndOf="@+id/taskItemStartTimeTV"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/taskItemStartTimeTV" />
+
+        <TextView
+            android:id="@+id/taskItemTitleTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Title"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/taskItemSubtitleTV"
+            app:layout_constraintLeft_toRightOf="@id/taskItemStartTimeTV"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/taskItemSubtitleTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Subtitle"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/taskItemColorLineIV"
+            app:layout_constraintLeft_toRightOf="@id/taskItemStartTimeTV"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/taskItemTitleTV" />
+
+        <ImageView
+            android:id="@+id/taskItemColorLineIV"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

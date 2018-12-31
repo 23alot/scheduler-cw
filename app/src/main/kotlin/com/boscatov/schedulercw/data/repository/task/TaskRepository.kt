@@ -1,7 +1,7 @@
-package com.boscatov.schedulercw.interactor.task
+package com.boscatov.schedulercw.data.repository.task
 
 import com.boscatov.schedulercw.data.entity.Task
 
-interface TaskInteractor {
+interface TaskRepository {
     fun getTasks(): List<Task>
 }

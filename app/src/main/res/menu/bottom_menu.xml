@@ -13,6 +13,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/bottom_menu_home_action"
+        android:checked="true"
         app:showAsAction="ifRoom" />
 
     <item
