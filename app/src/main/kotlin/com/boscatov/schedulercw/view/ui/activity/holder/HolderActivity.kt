@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
+import kotlinx.android.synthetic.main.activity_holder.*
 
 class HolderActivity : AppCompatActivity() {
 
@@ -18,5 +19,6 @@ class HolderActivity : AppCompatActivity() {
         setContentView(R.layout.activity_holder)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        activityHolderBottomNV.inflateMenu(R.menu.bottom_menu)
     }
 }

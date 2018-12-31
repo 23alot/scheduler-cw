@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Scheduler CW</string>
+    <!-- Bottom menu -->
+    <string name="bottom_menu_calendar_action">Calendar</string>
+    <string name="bottom_menu_home_action">Home</string>
+    <string name="bottom_menu_stats_action">Stats</string>
 </resources>

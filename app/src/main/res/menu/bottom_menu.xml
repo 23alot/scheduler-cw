@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottomMenuCalendarAction"
+        android:enabled="true"
+        android:icon="@drawable/ic_date_range_black_24dp"
+        android:title="@string/bottom_menu_calendar_action"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/bottomMenuHomeAction"
+        android:enabled="true"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/bottom_menu_home_action"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/bottomMenuStatsAction"
+        android:enabled="true"
+        android:icon="@drawable/ic_show_chart_black_24dp"
+        android:title="@string/bottom_menu_stats_action"
+        app:showAsAction="ifRoom" />
+</menu>
