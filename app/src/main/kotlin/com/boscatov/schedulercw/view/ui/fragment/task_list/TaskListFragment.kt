@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import com.boscatov.schedulercw.R
@@ -45,5 +46,9 @@ class TaskListFragment : Fragment() {
             taskListAdapter.setTasks(it)
         })
         taskListViewModel.loadData()
+        taskListFragmentFAB.setOnClickListener {
+            mainViewModel.onOpenNewTaskDialog()
+            it.findNavController().navigate(R.id.action_taskListFragment_to_newTaskDialogFragment)
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.boscatov.schedulercw.view.ui.activity.holder
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -14,6 +15,9 @@ import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment
 import com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment
 import com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment
+import com.boscatov.schedulercw.view.ui.state.DefaultState
+import com.boscatov.schedulercw.view.ui.state.NewTaskState
+import com.boscatov.schedulercw.view.ui.state.State
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_holder.*
@@ -29,6 +33,9 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         activityHolderBottomNV.setOnNavigationItemSelectedListener(this)
+        mainViewModel.state.observe(this, Observer {
+            changeState(it)
+        })
         initializeBottomNavigationView()
         setupToolbar()
         initWorkers()
@@ -84,6 +91,24 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
+        }
+    }
+
+    private fun changeState(state: State) {
+        when(state) {
+            is DefaultState -> changeToDefault()
+            is NewTaskState -> changeToNewTask()
+        }
+    }
+
+    private fun changeToDefault() {
+
+    }
+
+    private fun changeToNewTask() {
+        activityHolderBottomNV.visibility = View.GONE
+        supportActionBar?.apply {
+            setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
         }
     }
 }

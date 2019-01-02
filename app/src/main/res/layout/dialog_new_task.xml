@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialogNewTaskTitleTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Task name"
+        app:layout_constraintBottom_toTopOf="@+id/dialogNewTaskTitleETV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/dialogNewTaskTitleETV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDescriptionTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskTitleTV" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskDescriptionTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Task description"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDescriptionETV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskTitleETV" />
+
+    <EditText
+        android:id="@+id/dialogNewTaskDescriptionETV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskStartDateTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskDescriptionTV" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskStartDateTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Date start"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskStartDateTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskDescriptionETV" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskStartDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+        android:text="Date"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskEndDateTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/dialogNewTaskStartTimeTextView"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskStartDateTV" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskStartTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+        android:text="Time"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskEndDateTV"
+        app:layout_constraintLeft_toRightOf="@id/dialogNewTaskStartDateTextView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskStartDateTV" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskEndDateTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/dialogNewTaskEndTimeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/dialogNewTaskStartDateTextView" />
+
+    <TextView
+        android:id="@+id/dialogNewTaskEndTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+        android:text="Time"
+        app:layout_constraintLeft_toRightOf="@id/dialogNewTaskEndDateTV"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskStartDateTextView"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"/>
+
+    <CheckBox
+        android:id="@+id/dialogNewTaskAllowAutoTimeCB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow Autotime"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskEndDateTV"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

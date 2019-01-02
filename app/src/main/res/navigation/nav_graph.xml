@@ -8,7 +8,11 @@
     <fragment android:id="@+id/taskListFragment"
               android:name="com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment"
               android:label="TaskListFragment"
-              tools:layout="@layout/fragment_task_list" />
+              tools:layout="@layout/fragment_task_list" >
+        <action
+            android:id="@+id/action_taskListFragment_to_newTaskDialogFragment"
+            app:destination="@id/newTaskDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment"
@@ -17,4 +21,8 @@
         android:id="@+id/statsFragment"
         android:name="com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment"
         android:label="StatsFragment" />
+    <fragment
+        android:id="@+id/newTaskDialogFragment"
+        android:name="com.boscatov.schedulercw.view.ui.dialog.new_task.NewTaskDialogFragment"
+        android:label="NewTaskDialogFragment" />
 </navigation>
