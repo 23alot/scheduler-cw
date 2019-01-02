@@ -13,4 +13,8 @@
         android:id="@+id/calendarFragment"
         android:name="com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment"
         android:label="CalendarFragment" />
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment"
+        android:label="StatsFragment" />
 </navigation>

@@ -1,21 +1,22 @@
 package com.boscatov.schedulercw.view.ui.activity.holder
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.work.WorkManager
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment
+import com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment
 import com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_holder.*
-import java.util.logging.Logger
 
 class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -30,14 +31,30 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         activityHolderBottomNV.setOnNavigationItemSelectedListener(this)
         initializeBottomNavigationView()
         setupToolbar()
+        initWorkers()
+    }
 
+    // TODO: Перенести в Preferences
+    private fun initWorkers() {
+        Log.d("MainViewModel", "init0")
+        WorkManager.getInstance().cancelAllWork()
+        WorkManager.getInstance().cancelAllWorkByTag(MainViewModel.TASK_WORKER_TAG)
+
+        Log.d("MainViewModel", "${WorkManager.getInstance().cancelAllWork().result}")
+        WorkManager.getInstance().getWorkInfosByTagLiveData(MainViewModel.TASK_WORKER_TAG).observe(this, Observer {
+            Log.d("MainViewModel", "init ${it.size}")
+            if (it.size != 5) {
+                Log.d("MainViewModel", "init")
+                mainViewModel.initNotificationWorker()
+            }
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.bottomMenuCalendarAction -> navController.navigate(R.id.calendarFragment)
             R.id.bottomMenuHomeAction -> navController.navigate(R.id.taskListFragment)
-//            R.id.bottomMenuStatsAction ->
+            R.id.bottomMenuStatsAction -> navController.navigate(R.id.statsFragment)
         }
         return true
     }
@@ -53,9 +70,10 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     }
 
     private fun initializeBottomNavigationView() {
-        val id = when(navController.currentDestination?.label) {
+        val id = when (navController.currentDestination?.label) {
             TaskListFragment::class.java.simpleName -> R.id.bottomMenuHomeAction
             CalendarFragment::class.java.simpleName -> R.id.bottomMenuCalendarAction
+            StatsFragment::class.java.simpleName -> R.id.bottomMenuStatsAction
             else -> R.id.bottomMenuHomeAction
         }
         activityHolderBottomNV.selectedItemId = id

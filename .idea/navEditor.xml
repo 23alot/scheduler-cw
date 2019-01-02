@@ -20,13 +20,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="statsFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="279" />
+                            <option name="y" value="-109" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="taskListFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="283" />
-                            <option name="y" value="133" />
+                            <option name="x" value="292" />
+                            <option name="y" value="323" />
                           </Point>
                         </option>
                       </LayoutPositions>

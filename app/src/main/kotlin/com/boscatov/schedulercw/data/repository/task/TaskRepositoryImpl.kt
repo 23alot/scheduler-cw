@@ -22,4 +22,8 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
         }
         return test
     }
+
+    override fun getNearestTask(): Task? {
+        return Task(5, "TestNotificationTitle", "TestNotificationDescription", Color.RED, 30, "31 December", "9:00")
+    }
 }

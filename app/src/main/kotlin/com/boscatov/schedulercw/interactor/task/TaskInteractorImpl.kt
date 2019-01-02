@@ -15,7 +15,12 @@ class TaskInteractorImpl : TaskInteractor {
         val scope = Toothpick.openScope(Scopes.TASK_SCOPE)
         Toothpick.inject(this, scope)
     }
+
     override fun getTasks(): List<Task> {
         return taskRepository.getTasks()
+    }
+
+    override fun getNearestTask(): Task? {
+        return taskRepository.getNearestTask()
     }
 }

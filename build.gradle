@@ -25,6 +25,8 @@ buildscript {
         uiAutomatorVersion = '2.2.0-alpha4'
         workVersion = '1.0.0-beta01'
         toothpickVersion = '1.1.3'
+        rxJavaVersion = '2.2.5'
+        rxAndroidVersion = '2.1.0'
     }
     repositories {
         google()
