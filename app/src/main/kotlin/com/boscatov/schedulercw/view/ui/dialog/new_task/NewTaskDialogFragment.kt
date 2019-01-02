@@ -53,12 +53,6 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             date.show()
         }
 
-        dialogNewTaskEndDateTextView.setOnClickListener {
-            val date = DatePickerDialog(activity, this, year, month, day)
-            currentPicker = it as TextView
-            date.show()
-        }
-
         dialogNewTaskStartTimeTextView.setOnClickListener {
             val time = TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
             currentPicker = it as TextView

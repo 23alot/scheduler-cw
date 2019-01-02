@@ -30,6 +30,10 @@ class MainViewModel : ViewModel() {
         state.value = NewTaskState()
     }
 
+    fun onCloseNewTaskDialog() {
+        state.value = DefaultState()
+    }
+
     companion object {
         const val TASK_WORKER_TAG = "Monitor notification worker"
     }

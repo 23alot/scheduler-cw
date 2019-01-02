@@ -2,6 +2,7 @@ package com.boscatov.schedulercw.view.ui.activity.holder
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.work.WorkManager
 import com.boscatov.schedulercw.R
+import com.boscatov.schedulercw.R.id.toolbarDone
 import com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment
 import com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment
 import com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment
@@ -26,6 +28,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     private lateinit var navController: NavController
     private lateinit var mainViewModel: MainViewModel
+    private var toolbarMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         initializeBottomNavigationView()
         setupToolbar()
         initWorkers()
+        changeToDefault()
     }
 
     // TODO: Перенести в Preferences
@@ -69,7 +73,13 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             android.R.id.home -> {
-                activityHolderDrawerLayout.openDrawer(GravityCompat.START)
+                if (mainViewModel.state.value is DefaultState) {
+                    activityHolderDrawerLayout.openDrawer(GravityCompat.START)
+                }
+                else {
+                    navController.navigateUp()
+                    mainViewModel.onCloseNewTaskDialog()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -102,13 +112,25 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     }
 
     private fun changeToDefault() {
-
+        activityHolderBottomNV.visibility = View.VISIBLE
+        toolbarMenu?.findItem(R.id.toolbarDone)?.isVisible = false
+        supportActionBar?.apply {
+            setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
+        }
     }
 
     private fun changeToNewTask() {
         activityHolderBottomNV.visibility = View.GONE
+        toolbarMenu?.findItem(R.id.toolbarDone)?.isVisible = true
         supportActionBar?.apply {
             setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        toolbarMenu = menu
+        changeToDefault()
+        return super.onCreateOptionsMenu(menu)
     }
 }
