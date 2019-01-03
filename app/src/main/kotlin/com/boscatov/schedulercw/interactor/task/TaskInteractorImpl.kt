@@ -23,4 +23,8 @@ class TaskInteractorImpl : TaskInteractor {
     override fun getNearestTask(): Task? {
         return taskRepository.getNearestTask()
     }
+
+    override fun saveTask(task: Task) {
+        taskRepository.saveTask(task)
+    }
 }

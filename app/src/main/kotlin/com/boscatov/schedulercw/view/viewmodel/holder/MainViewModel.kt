@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.boscatov.schedulercw.view.ui.state.DefaultState
+import com.boscatov.schedulercw.view.ui.state.NewTaskAcceptState
+import com.boscatov.schedulercw.view.ui.state.NewTaskCreateCompleteState
 import com.boscatov.schedulercw.view.ui.state.NewTaskState
 import com.boscatov.schedulercw.view.ui.state.State
 import com.boscatov.schedulercw.worker.NearestTaskWorker
@@ -31,6 +33,14 @@ class MainViewModel : ViewModel() {
     }
 
     fun onCloseNewTaskDialog() {
+        state.value = DefaultState()
+    }
+
+    fun onAcceptNewTask() {
+        state.value = NewTaskAcceptState()
+    }
+
+    fun onNewTaskComplete() {
         state.value = DefaultState()
     }
 

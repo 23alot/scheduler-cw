@@ -82,6 +82,13 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
                 }
                 true
             }
+            R.id.toolbarDone -> {
+                if(mainViewModel.state.value is NewTaskState) {
+                    navController.navigateUp()
+                    mainViewModel.onAcceptNewTask()
+                }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -117,6 +124,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         supportActionBar?.apply {
             setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
         }
+
     }
 
     private fun changeToNewTask() {

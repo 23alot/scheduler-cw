@@ -6,4 +6,6 @@ interface TaskRepository {
     fun getTasks(): List<Task>
 
     fun getNearestTask(): Task?
+
+    fun saveTask(task: Task)
 }
