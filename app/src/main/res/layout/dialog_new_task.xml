@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -91,18 +90,64 @@
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
         android:text="Time"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"
         app:layout_constraintLeft_toRightOf="@id/dialogNewTaskEndDateTV"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskStartDateTextView"
-        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"/>
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskStartDateTextView" />
 
     <CheckBox
         android:id="@+id/dialogNewTaskAllowAutoTimeCB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Allow Autotime"
+        app:layout_constraintBottom_toTopOf="@id/dialogNewTaskChoosePriorityRG"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskEndDateTV"/>
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskEndDateTV" />
+
+    <RadioGroup
+        android:id="@+id/dialogNewTaskChoosePriorityRG"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogNewTaskAllowAutoTimeCB">
+
+        <RadioButton
+            android:id="@+id/dialogNewTaskPriority1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1" />
+
+        <RadioButton
+            android:id="@+id/dialogNewTaskPriority2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2" />
+
+        <RadioButton
+            android:id="@+id/dialogNewTaskPriority3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="3" />
+
+        <RadioButton
+            android:id="@+id/dialogNewTaskPriority4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="4" />
+
+        <RadioButton
+            android:id="@+id/dialogNewTaskPriority5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="5" />
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
