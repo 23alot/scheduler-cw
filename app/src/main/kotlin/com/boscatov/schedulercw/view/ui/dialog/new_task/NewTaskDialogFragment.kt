@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
@@ -18,13 +17,13 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.boscatov.schedulercw.R
+import com.boscatov.schedulercw.view.adapter.color_choose.ColorChooseAdapter
 import com.boscatov.schedulercw.view.ui.state.NewTaskAcceptState
 import com.boscatov.schedulercw.view.ui.state.State
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import com.boscatov.schedulercw.view.viewmodel.new_task.NewTaskViewModel
 import kotlinx.android.synthetic.main.dialog_new_task.*
 import java.util.Calendar
-import javax.inject.Inject
 
 class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -54,7 +53,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         newTaskViewModel = ViewModelProviders.of(this).get(NewTaskViewModel::class.java)
     }
 
-    private fun changeState(state:State) {
+    private fun changeState(state: State) {
         if (state is NewTaskAcceptState) {
             saveNewTask()
         }
@@ -91,6 +90,9 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             currentPicker = it as TextView
             time.show()
         }
+
+        val spinnerAdapter = ColorChooseAdapter(context!!, R.layout.spinner_color_choose)
+        dialogNewTaskColorChooseSpinner.adapter = spinnerAdapter
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
