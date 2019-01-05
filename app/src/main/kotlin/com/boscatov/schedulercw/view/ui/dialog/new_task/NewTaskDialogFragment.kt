@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
@@ -17,13 +18,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.boscatov.schedulercw.R
+import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.view.adapter.color_choose.ColorChooseAdapter
 import com.boscatov.schedulercw.view.ui.state.NewTaskAcceptState
 import com.boscatov.schedulercw.view.ui.state.State
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import com.boscatov.schedulercw.view.viewmodel.new_task.NewTaskViewModel
 import kotlinx.android.synthetic.main.dialog_new_task.*
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.TimeZone
 
 class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -60,17 +64,39 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
     }
 
     private fun saveNewTask() {
-        newTaskViewModel.onAcceptNewTask()
+        val task = getTask()
+        newTaskViewModel.onAcceptNewTask(task)
         mainViewModel.onNewTaskComplete()
     }
 
+    private fun getTask(): Task {
+        val title = dialogNewTaskTitleETV.text.toString()
+        val description = dialogNewTaskDescriptionETV.text.toString()
+        val startDate = dialogNewTaskStartDateTextView.text.toString()
+        val startTime = dialogNewTaskStartTimeTextView.text.toString()
+        val duration = dialogNewTaskDurationSpinner.text.toString().toInt()
+        val radioButton = view?.findViewById<RadioButton>(dialogNewTaskChoosePriorityRG.checkedRadioButtonId)
+        val priority = radioButton?.text.toString().toInt()
+        val color = dialogNewTaskColorChooseSpinner.selectedItem as Int
+
+        return Task(
+            taskTitle = title,
+            taskDescription = description,
+            taskColor = color,
+            taskDateStart = startDate,
+            taskDuration = duration,
+            taskTimeStart = startTime,
+            taskPriority = priority
+        )
+    }
+
     private fun initSpinner() {
-        val c = Calendar.getInstance()
+        val c = Calendar.getInstance(TimeZone.getDefault())
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val minute = c.get(Calendar.MINUTE)
-        val hour = c.get(Calendar.HOUR)
+        val hour = c.get(Calendar.HOUR_OF_DAY)
         dialogNewTaskStartDateTextView.text = "Date"
 
         dialogNewTaskStartDateTextView.setOnClickListener {
@@ -85,7 +111,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             time.show()
         }
 
-        dialogNewTaskEndTimeTextView.setOnClickListener {
+        dialogNewTaskDurationSpinner.setOnClickListener {
             val time = TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
             currentPicker = it as TextView
             time.show()
@@ -97,11 +123,18 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         Log.d("NewTaskDialog", "$day.$month.$year")
-        currentPicker?.setText("$day.$month.$year")
+        val date = Calendar.getInstance()
+        date.set(year, month, day)
+        val format = SimpleDateFormat.getDateInstance()
+        currentPicker?.setText(format.format(date.time))
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        Log.d("NewTaskDialog", "$minute:$hourOfDay")
-        currentPicker?.setText("$minute:$hourOfDay")
+        Log.d("NewTaskDialog", "$hourOfDay:$minute")
+        val date = Calendar.getInstance()
+        date.set(Calendar.MINUTE, minute)
+        date.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        val format = SimpleDateFormat.getTimeInstance(SimpleDateFormat.SHORT)
+        currentPicker?.setText(format.format(date.time))
     }
 }

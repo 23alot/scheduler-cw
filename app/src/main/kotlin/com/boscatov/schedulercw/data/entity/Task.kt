@@ -13,5 +13,6 @@ data class Task(
     @ColumnInfo(name = "task_duration") val taskDuration: Int,
     @ColumnInfo(name = "task_date_start") val taskDateStart: String,
     @ColumnInfo(name = "task_time_start") val taskTimeStart: String,
-    @ColumnInfo(name = "task_priority") val taskPriority: Int
+    @ColumnInfo(name = "task_priority") val taskPriority: Int,
+    @ColumnInfo(name = "task_is_done") val taskIsDone: Boolean = false
 )

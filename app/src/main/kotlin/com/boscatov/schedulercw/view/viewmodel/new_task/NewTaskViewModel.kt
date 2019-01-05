@@ -19,9 +19,8 @@ class NewTaskViewModel : ViewModel() {
         Toothpick.inject(this, scope)
     }
 
-    fun onAcceptNewTask() {
+    fun onAcceptNewTask(task: Task) {
         Observable.fromCallable {
-            val task = Task(taskTitle = "TestBDTitle", taskDescription = "TestBDDescription", taskPriority = 2, taskTimeStart = "Sep 1", taskColor = Color.RED, taskDuration = 30, taskDateStart = "Sep 2")
             taskInteractor.saveTask(task)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
         }
