@@ -4,6 +4,7 @@ import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
 import com.boscatov.schedulercw.di.Scopes
 import toothpick.Toothpick
+import java.util.Date
 import javax.inject.Inject
 
 class TaskInteractorImpl : TaskInteractor {
@@ -18,6 +19,10 @@ class TaskInteractorImpl : TaskInteractor {
 
     override fun getTasks(): List<Task> {
         return taskRepository.getTasks()
+    }
+
+    override fun getDateTasks(date: Date): List<Task> {
+        return taskRepository.getDateTask(date)
     }
 
     override fun getNearestTask(): Task? {

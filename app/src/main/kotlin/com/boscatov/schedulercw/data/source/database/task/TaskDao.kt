@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.boscatov.schedulercw.data.entity.Task
+import java.util.Date
 
 @Dao
 interface TaskDao {
@@ -13,6 +14,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task WHERE taskId IN (:userIds)")
     fun loadAllByIds(userIds: IntArray): List<Task>
+
+    @Query("SELECT * FROM task WHERE task_date_start BETWEEN :from AND :to")
+    fun loadAllByDate(from: Date, to: Date): List<Task>
 
 //    @Query("SELECT * FROM user WHERE first_name LIKE :first AND " +
 //            "last_name LIKE :last LIMIT 1")

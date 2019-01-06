@@ -6,10 +6,10 @@ import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
+import java.util.Calendar
 import javax.inject.Inject
 
 class TaskListViewModel : ViewModel() {
@@ -26,7 +26,8 @@ class TaskListViewModel : ViewModel() {
 
     fun loadData() {
         Observable.fromCallable {
-            taskInteractor.getTasks()
+            val today = Calendar.getInstance().time
+            taskInteractor.getDateTasks(today)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
             tasks.value = it
         }

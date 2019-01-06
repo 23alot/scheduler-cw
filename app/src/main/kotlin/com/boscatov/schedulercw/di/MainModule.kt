@@ -17,7 +17,7 @@ class MainModule(context: Context) : Module() {
             context,
             TaskDatabase::class.java,
             TaskDatabase.TASK_DATABASE_NAME
-        ).addMigrations(TaskDatabase.migration1_2).build()
+        ).fallbackToDestructiveMigration().build()
         bind(TaskDatabase::class.java).toInstance(db)
         bind(Context::class.java).toInstance(context)
     }

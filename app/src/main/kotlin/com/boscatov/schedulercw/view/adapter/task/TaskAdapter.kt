@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Task
 import kotlinx.android.synthetic.main.task_item.view.*
+import java.text.SimpleDateFormat
 
 class TaskAdapter(val tasks: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     class TaskViewHolder(val task: CardView) : RecyclerView.ViewHolder(task)
@@ -17,7 +18,8 @@ class TaskAdapter(val tasks: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.task.taskItemStartTimeTV.setText(tasks[position].taskTimeStart)
+        val dateFormatter = SimpleDateFormat("kk:mm")
+        holder.task.taskItemStartTimeTV.setText(dateFormatter.format(tasks[position].taskDateStart))
         holder.task.taskItemEndTimeTV.setText("${tasks[position].taskDuration}")
         holder.task.taskItemTitleTV.setText(tasks[position].taskTitle)
         holder.task.taskItemSubtitleTV.setText(tasks[position].taskDescription)

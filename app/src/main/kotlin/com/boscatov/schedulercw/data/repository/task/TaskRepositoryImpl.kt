@@ -3,6 +3,8 @@ package com.boscatov.schedulercw.data.repository.task
 import android.graphics.Color
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.source.database.task.TaskDatabase
+import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor() : TaskRepository {
@@ -10,27 +12,25 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
     lateinit var database: TaskDatabase
 
     override fun getTasks(): List<Task> {
-//        val test = arrayListOf<Task>()
-//        val colors = listOf(Color.RED, Color.BLACK, Color.BLUE, Color.GREEN, Color.YELLOW, Color.GRAY)
-//        for (i in 0..5) {
-//            val task = Task(
-//                i.toLong(),
-//                taskTitle = "TestTitle$i",
-//                taskDescription = "TestDescription$i",
-//                taskDateStart = "TestDateStart$i",
-//                taskDuration = i,
-//                taskColor = colors[i],
-//                taskTimeStart = "${i + 5}:00",
-//                taskPriority = i
-//            )
-//            test.add(task)
-//        }
-//        return test
         return database.taskDao().getAll()
     }
 
+    override fun getDateTask(date: Date): List<Task> {
+        val start = Calendar.getInstance()
+        start.time = Date(date.time)
+        start.set(Calendar.HOUR_OF_DAY, 0)
+        start.set(Calendar.MINUTE, 0)
+        start.set(Calendar.SECOND, 0)
+        val end = Calendar.getInstance()
+        end.time = Date(date.time)
+        end.set(Calendar.HOUR_OF_DAY, 23)
+        end.set(Calendar.MINUTE, 59)
+        end.set(Calendar.SECOND, 59)
+        return database.taskDao().loadAllByDate(start.time, end.time)
+    }
+
     override fun getNearestTask(): Task? {
-        return Task(5, "TestNotificationTitle", "TestNotificationDescription", Color.RED, 30, "31 December", "9:00", 3)
+        return Task(5, "TestNotificationTitle", "TestNotificationDescription", Color.RED, 30, Calendar.getInstance().time, 3, false)
     }
 
     override fun saveTask(task: Task) {
