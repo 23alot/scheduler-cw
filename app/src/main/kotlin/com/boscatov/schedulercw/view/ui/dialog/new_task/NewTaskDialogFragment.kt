@@ -78,8 +78,8 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val radioButton = view?.findViewById<RadioButton>(dialogNewTaskChoosePriorityRG.checkedRadioButtonId)
         val priority = radioButton?.text.toString().toInt()
         val color = dialogNewTaskColorChooseSpinner.selectedItem as Int
-        val dateFormat = SimpleDateFormat.getDateInstance().parse(startDate)
-        val timeFormat = SimpleDateFormat("hh:mm").parse(startTime)
+        val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(startDate)
+        val timeFormat = SimpleDateFormat("HH:mm").parse(startTime)
         val date = Calendar.getInstance()
         date.time = dateFormat
         val time = Calendar.getInstance()
@@ -134,7 +134,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         Log.d("NewTaskDialog", "$day.$month.$year")
         val date = Calendar.getInstance()
         date.set(year, month, day)
-        val format = SimpleDateFormat.getDateInstance()
+        val format = SimpleDateFormat("dd MMMM, yyyy")
         currentPicker?.setText(format.format(date.time))
     }
 
@@ -143,7 +143,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val date = Calendar.getInstance()
         date.set(Calendar.MINUTE, minute)
         date.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        val format = SimpleDateFormat("kk:mm")
+        val format = SimpleDateFormat("HH:mm")
         currentPicker?.setText(format.format(date.time))
     }
 }

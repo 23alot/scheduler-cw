@@ -18,7 +18,7 @@ class TaskAdapter(val tasks: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val dateFormatter = SimpleDateFormat("kk:mm")
+        val dateFormatter = SimpleDateFormat("HH:mm")
         holder.task.taskItemStartTimeTV.setText(dateFormatter.format(tasks[position].taskDateStart))
         holder.task.taskItemEndTimeTV.setText("${tasks[position].taskDuration}")
         holder.task.taskItemTitleTV.setText(tasks[position].taskTitle)

@@ -30,7 +30,13 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
     }
 
     override fun getNearestTask(): Task? {
-        return Task(5, "TestNotificationTitle", "TestNotificationDescription", Color.RED, 30, Calendar.getInstance().time, 3, false)
+        val start = Calendar.getInstance()
+        val end = Calendar.getInstance()
+        end.add(Calendar.DAY_OF_MONTH, 7)
+        end.set(Calendar.HOUR_OF_DAY, 23)
+        end.set(Calendar.MINUTE, 59)
+        end.set(Calendar.SECOND, 59)
+        return database.taskDao().getNearestTask(start.time, end.time)
     }
 
     override fun saveTask(task: Task) {

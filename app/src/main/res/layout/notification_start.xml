@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><!--RemoteViews can't work with ConstraintLayout :( -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+
+    <ImageView
+        android:id="@+id/notificationStartIconIV"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/notificationStartIconIV"
+        android:text="@string/app_name"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/notificationStartTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/notificationStartIconIV"
+        android:layout_marginStart="16dp"
+        android:layout_toStartOf="@id/notificationStartIB"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Title" />
+
+    <TextView
+        android:id="@+id/notificationStartTimeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/notificationStartTitleTV"
+        android:layout_marginStart="16dp"
+        android:layout_toStartOf="@id/notificationStartIB"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Time" />
+
+    <ImageView
+        android:id="@+id/notificationStartIB"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@id/notificationCancelIB"
+        android:src="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageView
+        android:id="@+id/notificationCancelIB"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_close_black_24dp" />
+</RelativeLayout>

@@ -59,6 +59,9 @@ class TaskListFragment : Fragment() {
         taskListFragmentDayForwardIB.setOnClickListener {
             taskListViewModel.increaseDate()
         }
+        mainViewModel.state.observe(this, Observer {
+            taskListViewModel.loadData()
+        })
     }
 
     private fun changeTitle(date: Date) {
