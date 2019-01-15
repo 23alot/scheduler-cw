@@ -14,5 +14,10 @@ data class Task(
     @ColumnInfo(name = "task_duration") val taskDuration: Int,
     @ColumnInfo(name = "task_date_start") val taskDateStart: Date,
     @ColumnInfo(name = "task_priority") val taskPriority: Int,
-    @ColumnInfo(name = "task_is_done") val taskIsDone: Boolean = false
+    @ColumnInfo(name = "task_is_done") val taskIsDone: Boolean = false,
+    @ColumnInfo(name = "task_status") val taskStatus: TaskStatus = TaskStatus.PENDING
 )
+
+enum class TaskStatus {
+    ABANDONED, DONE, ACTIVE, PENDING
+}

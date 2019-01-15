@@ -39,6 +39,16 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
         return database.taskDao().getNearestTask(start.time, end.time)
     }
 
+    override fun getLatestTask(taskStatus: IntArray): Task? {
+        val start = Calendar.getInstance()
+        val end = Calendar.getInstance()
+        end.add(Calendar.DAY_OF_MONTH, 7)
+        end.set(Calendar.HOUR_OF_DAY, 23)
+        end.set(Calendar.MINUTE, 59)
+        end.set(Calendar.SECOND, 59)
+        return database.taskDao().getLatestTask(taskStatus, start.time, end.time)
+    }
+
     override fun saveTask(task: Task) {
         database.taskDao().insertAll(task)
     }

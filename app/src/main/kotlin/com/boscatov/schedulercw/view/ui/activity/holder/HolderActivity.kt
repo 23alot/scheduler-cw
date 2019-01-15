@@ -47,19 +47,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     // TODO: Перенести в Preferences
     private fun initWorkers() {
-        Log.d("MainViewModel", "init0")
-        WorkManager.getInstance().cancelAllWork()
-        WorkManager.getInstance().cancelAllWorkByTag(MainViewModel.TASK_WORKER_TAG)
-
-        Log.d("MainViewModel", "${WorkManager.getInstance().cancelAllWork().result}")
-        WorkManager.getInstance().getWorkInfosByTagLiveData(MainViewModel.TASK_WORKER_TAG).observe(this, Observer {
-            Log.d("MainViewModel", "init ${it.size}")
-            it[0].state
-            if (it.size != 5) {
-                Log.d("MainViewModel", "init")
-                mainViewModel.initNotificationWorker()
-            }
-        })
+        mainViewModel.initNotificationWorker()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><!--RemoteViews can't work with ConstraintLayout :( -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp">
+
+    <ImageView
+        android:id="@+id/notificationNoTaskIconIV"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_launcher_foreground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/notificationNoTaskIconIV"
+        android:text="@string/app_name"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/notificationNoTaskTitleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/notificationNoTaskIconIV"
+        android:layout_marginStart="16dp"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Title" />
+
+    <TextView
+        android:id="@+id/notificationNoTaskTimeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/notificationNoTaskTitleTV"
+        android:layout_marginStart="16dp"
+        android:textAppearance="@style/TextAppearance.Compat.Notification.Time" />
+</RelativeLayout>

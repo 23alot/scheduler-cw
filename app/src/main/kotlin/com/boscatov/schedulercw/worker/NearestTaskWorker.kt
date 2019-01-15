@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -13,6 +12,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Task
+import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import toothpick.Toothpick
@@ -30,37 +30,25 @@ class NearestTaskWorker(private val context: Context, params: WorkerParameters) 
     }
 
     override fun doWork(): Result {
-//        sendNotification(taskInteractor.getNearestTask())
-        sendNotificationStart()
+        sendNotificationStart(taskInteractor.getLatestTask(arrayOf(TaskStatus.ACTIVE, TaskStatus.PENDING)))
         return Result.success()
     }
 
-    private fun sendNotification(task: Task?) {
-        createNotificationChannel()
-        Log.d("NearestTaskWorker", "$task ${task?.taskTitle}")
-        val title = task?.taskTitle ?: "No tasks"
-        val description = StringBuilder()
-        description.append(task?.taskDescription).append(" ")
-        description.append(SimpleDateFormat("HH:mm").format(task?.taskDateStart)).append(" ")
-        description.append(task?.taskDuration)
-        val builder = NotificationCompat.Builder(context, PERIODIC_TASK_NOTIFICATION_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(title)
-            .setContentText(description.toString())
-            .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(context)) {
-            val notification = builder.build()
-            notification.flags = Notification.FLAG_ONGOING_EVENT
-            notify(TASK_MONITOR_ID, builder.build())
+    private fun sendNotificationStart(task: Task?) {
+        if (task?.taskStatus == TaskStatus.ACTIVE) return
+        val remoteViews: RemoteViews
+        if (task != null) {
+            remoteViews = RemoteViews(context.packageName, R.layout.notification_start)
+            remoteViews.setTextViewText(R.id.notificationStartTitleTV, task.taskTitle)
+            remoteViews.setTextViewText(
+                R.id.notificationStartTimeTV,
+                SimpleDateFormat("HH:mm").format(task.taskDateStart)
+            )
+        } else {
+            remoteViews = RemoteViews(context.packageName, R.layout.notification_no_tasks)
+            remoteViews.setTextViewText(R.id.notificationNoTaskTitleTV, "No recent tasks")
+            remoteViews.setTextViewText(R.id.notificationNoTaskTimeTV, "You've done all tasks yet")
         }
-    }
-
-    private fun sendNotificationStart() {
-        val remoteViews = RemoteViews(context.packageName, R.layout.notification_start)
-        remoteViews.setTextViewText(R.id.notificationStartTitleTV, "Description")
-        remoteViews.setTextViewText(R.id.notificationStartTimeTV, "16:00")
         val builder = NotificationCompat.Builder(context, PERIODIC_TASK_NOTIFICATION_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setCustomContentView(remoteViews)

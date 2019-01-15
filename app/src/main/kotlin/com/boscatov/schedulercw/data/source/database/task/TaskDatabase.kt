@@ -7,7 +7,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.boscatov.schedulercw.data.entity.Task
 
-@Database(entities = [Task::class], version = 3)
+@Database(entities = [Task::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class TaskDatabase : RoomDatabase() {
     companion object {
@@ -15,6 +15,11 @@ abstract class TaskDatabase : RoomDatabase() {
         val migration1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE TASK ADD COLUMN task_is_done INTEGER DEFAULT 0 NOT NULL")
+            }
+        }
+        val migration2_3: Migration = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE TASK ADD COLUMN task_status INTEGER DEFAULT 3 NOT NULL")
             }
         }
     }

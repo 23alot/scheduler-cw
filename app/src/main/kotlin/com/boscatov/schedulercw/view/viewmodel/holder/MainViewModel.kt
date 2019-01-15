@@ -2,6 +2,8 @@ package com.boscatov.schedulercw.view.viewmodel.holder
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -19,19 +21,18 @@ class MainViewModel : ViewModel() {
     var state = MutableLiveData<State>()
 
     fun initNotificationWorker() {
-        val nearestTaskBuilder = OneTimeWorkRequestBuilder<NearestTaskWorker>()
-        nearestTaskBuilder.addTag(TASK_WORKER_TAG)
+        Observable.range(1, 5)
+            .concatMap<Any> { i -> Observable.just(i).delay(3, TimeUnit.MINUTES) }
+            .doOnNext { i ->
+                val nearestTaskBuilder = PeriodicWorkRequestBuilder<NearestTaskWorker>(15, TimeUnit.MINUTES)
+                nearestTaskBuilder.addTag(TASK_WORKER_TAG+"_$i")
+                val nearestTask = nearestTaskBuilder.build()
+                WorkManager.getInstance().enqueueUniquePeriodicWork(TASK_WORKER_TAG+"_$i", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
+            }.doOnComplete { }.observeOn(Schedulers.io()).subscribe()
+        val nearestTaskBuilder = PeriodicWorkRequestBuilder<NearestTaskWorker>(15, TimeUnit.MINUTES)
+        nearestTaskBuilder.addTag(TASK_WORKER_TAG+"_0")
         val nearestTask = nearestTaskBuilder.build()
-        WorkManager.getInstance().enqueue(nearestTask)
-//        Observable.range(1, 5)
-//            .concatMap<Any> { i -> Observable.just(i).delay(3, TimeUnit.MINUTES) }
-//            .doOnNext { i ->
-////                val nearestTaskBuilder = PeriodicWorkRequestBuilder<NearestTaskWorker>(15, TimeUnit.MINUTES)
-//                val nearestTaskBuilder = OneTimeWorkRequestBuilder<NearestTaskWorker>()
-//                nearestTaskBuilder.addTag(TASK_WORKER_TAG)
-//                val nearestTask = nearestTaskBuilder.build()
-//                WorkManager.getInstance().enqueue(nearestTask)
-//            }.doOnComplete { }.observeOn(Schedulers.io()).subscribe()
+        WorkManager.getInstance().enqueueUniquePeriodicWork(TASK_WORKER_TAG+"_0", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
     }
 
     fun onOpenNewTaskDialog() {
