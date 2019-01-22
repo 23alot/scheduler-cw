@@ -27,11 +27,25 @@ class TaskListViewModel : ViewModel() {
     }
 
     fun loadData() {
+        // TODO: Обработать Disposable
         Observable.fromCallable {
             taskInteractor.getDateTasks(day.value!!)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
             tasks.value = it
         }
+    }
+
+    fun getCurrentTaskId(): Int? {
+        val now = Calendar.getInstance().time
+        val id = tasks.value?.lastIndex
+        tasks.value?.let {
+            for ((i, task) in it.withIndex()) {
+                if (task.taskDateStart > now) {
+                    return i
+                }
+            }
+        }
+        return id
     }
 
     fun increaseDate() {

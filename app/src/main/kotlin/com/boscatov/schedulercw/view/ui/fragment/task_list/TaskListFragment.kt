@@ -43,6 +43,12 @@ class TaskListFragment : Fragment() {
 
         taskListViewModel.tasks.observe(this, Observer<List<Task>> {
             taskListAdapter.setTasks(it)
+            val id = taskListViewModel.getCurrentTaskId()
+            id?.let {
+                if(it >= 0) {
+                    taskListFragmentRV.layoutManager?.scrollToPosition(it)
+                }
+            }
         })
         taskListViewModel.day.observe(this, Observer {
             changeTitle(it)
