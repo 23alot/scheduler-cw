@@ -11,6 +11,10 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
     @Inject
     lateinit var database: TaskDatabase
 
+    override fun getTask(taskId: Long): Task {
+        return database.taskDao().getTask(taskId)
+    }
+
     override fun getTasks(): List<Task> {
         return database.taskDao().getAll()
     }

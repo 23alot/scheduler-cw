@@ -43,6 +43,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         setupToolbar()
         initWorkers()
         changeToDefault()
+        mainViewModel.testNetwork()
     }
 
     // TODO: Перенести в Preferences

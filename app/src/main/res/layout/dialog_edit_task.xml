@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dialogEditTaskTitleTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Task name"
+        app:layout_constraintBottom_toTopOf="@+id/dialogEditTaskTitleETV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/dialogEditTaskTitleETV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskDescriptionTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskTitleTV" />
+
+    <TextView
+        android:id="@+id/dialogEditTaskDescriptionTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Task description"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskDescriptionETV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskTitleETV" />
+
+    <EditText
+        android:id="@+id/dialogEditTaskDescriptionETV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskStartDateTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskDescriptionTV" />
+
+    <TextView
+        android:id="@+id/dialogEditTaskStartDateTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Date start"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskStartDateTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskDescriptionETV" />
+
+    <TextView
+        android:id="@+id/dialogEditTaskStartDateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+        android:text="Date"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskDurationTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/dialogEditTaskStartTimeTextView"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskStartDateTV" />
+
+    <TextView
+        android:id="@+id/dialogEditTaskStartTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
+        android:text="Time"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskDurationTV"
+        app:layout_constraintLeft_toRightOf="@id/dialogEditTaskStartDateTextView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskStartDateTV" />
+
+    <TextView
+        android:id="@+id/dialogEditTaskDurationTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Duration"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskAllowAutoTimeCB"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/dialogEditTaskDurationSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditTaskStartDateTextView" />
+
+    <EditText
+        android:id="@+id/dialogEditTaskDurationSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:digits="0123456789"
+        android:inputType="number|textVisiblePassword"
+        android:hint="15"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskAllowAutoTimeCB"
+        app:layout_constraintLeft_toRightOf="@id/dialogEditTaskDurationTV"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskStartDateTextView" />
+
+    <CheckBox
+        android:id="@+id/dialogEditTaskAllowAutoTimeCB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Allow Autotime"
+        app:layout_constraintBottom_toTopOf="@id/dialogEditTaskChoosePriorityRG"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskDurationTV" />
+
+    <RadioGroup
+        android:id="@+id/dialogEditTaskChoosePriorityRG"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
+        android:checkedButton="@+id/dialogEditTaskPriority3"
+        app:layout_constraintBottom_toTopOf="@+id/dialogEditTaskColorChooseTV"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskAllowAutoTimeCB">
+
+        <RadioButton
+            android:id="@+id/dialogEditTaskPriority1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="1" />
+
+        <RadioButton
+            android:id="@+id/dialogEditTaskPriority2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="2" />
+
+        <RadioButton
+            android:id="@+id/dialogEditTaskPriority3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="3" />
+
+        <RadioButton
+            android:id="@+id/dialogEditTaskPriority4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="4" />
+
+        <RadioButton
+            android:id="@+id/dialogEditTaskPriority5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:text="5" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/dialogEditTaskColorChooseTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Color"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/dialogEditTaskColorChooseSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditTaskChoosePriorityRG" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/dialogEditTaskColorChooseSpinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintLeft_toRightOf="@id/dialogEditTaskColorChooseTV"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditTaskChoosePriorityRG" />
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/dialogEditTaskStatusChooseSpinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogEditTaskColorChooseSpinner" />
+    <TextView
+        android:id="@+id/dialogEditTaskIdTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/dialogEditTaskStatusChooseSpinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

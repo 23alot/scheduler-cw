@@ -4,6 +4,9 @@ import com.boscatov.schedulercw.data.entity.Task
 import java.util.Date
 
 interface TaskRepository {
+
+    fun getTask(taskId: Long): Task
+
     fun getTasks(): List<Task>
 
     fun getDateTask(date: Date): List<Task>

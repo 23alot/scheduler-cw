@@ -20,18 +20,6 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="datePickerDialogFragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="1034" />
-                            <option name="y" value="63" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="newTaskDialogFragment">
                     <value>
                       <LayoutPositions>
@@ -40,15 +28,6 @@
                             <option name="x" value="633" />
                             <option name="y" value="317" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_newTaskDialogFragment_to_datePickerDialogFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

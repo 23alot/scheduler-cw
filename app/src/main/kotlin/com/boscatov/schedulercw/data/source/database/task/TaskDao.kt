@@ -9,6 +9,10 @@ import java.util.Date
 
 @Dao
 interface TaskDao {
+
+    @Query("SELECT * FROM task WHERE taskId IS :taskId")
+    fun getTask(taskId: Long): Task
+
     @Query("SELECT * FROM task ORDER BY task_date_start")
     fun getAll(): List<Task>
 

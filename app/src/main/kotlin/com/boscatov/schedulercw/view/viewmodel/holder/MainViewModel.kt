@@ -35,6 +35,10 @@ class MainViewModel : ViewModel() {
         WorkManager.getInstance().enqueueUniquePeriodicWork(TASK_WORKER_TAG+"_0", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
     }
 
+    fun testNetwork() {
+
+    }
+
     fun onOpenNewTaskDialog() {
         state.value = NewTaskState()
     }

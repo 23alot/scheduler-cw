@@ -19,5 +19,11 @@ data class Task(
 )
 
 enum class TaskStatus {
-    ABANDONED, DONE, ACTIVE, PENDING
+    ABANDONED, WAIT_FOR_ACTION, DONE, ACTIVE, PENDING
 }
+
+enum class TaskAction {
+    ABANDON, START, FINISH
+}
+
+const val TASK_ACTION = "TASK_ACTION"

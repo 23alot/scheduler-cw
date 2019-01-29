@@ -42,17 +42,19 @@
         android:layout_toStartOf="@id/notificationStartIB"
         android:textAppearance="@style/TextAppearance.Compat.Notification.Time" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/notificationStartIB"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="8dp"
-        android:layout_toStartOf="@id/notificationCancelIB"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_toStartOf="@id/notificationStartCancelIB"
         android:src="@drawable/ic_play_arrow_black_24dp" />
 
     <ImageView
-        android:id="@+id/notificationCancelIB"
+        android:id="@+id/notificationStartCancelIB"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"
