@@ -99,6 +99,32 @@ class Matrix() {
         }
         return inverse
     }
+
+    operator fun times(other: Matrix): Matrix {
+        if (other.matrix.size != this.matrix[0].size) {
+            throw IllegalArgumentException("Not valid dimensions")
+        }
+
+        val result = Matrix(this.matrix.size, other.matrix[0].size)
+        for (i in 0 until result.matrix.size) {
+            for (j in 0 until result.matrix[0].size) {
+                for (k in 0 until this.matrix[0].size) {
+                    result.matrix[i][j] += this.matrix[i][k] * other.matrix[k][j]
+                }
+            }
+        }
+        return result
+    }
+
+    fun toDoubleArrayList(): ArrayList<Double> {
+        val result = arrayListOf<Double>()
+        for (row in matrix) {
+            for(value in row) {
+                result.add(value)
+            }
+        }
+        return result
+    }
 }
 
 fun matrixOf(vararg rows: MutableList<Double>): Matrix {
@@ -115,6 +141,35 @@ fun main(arg: Array<String>) {
         mutableListOf(2.0, -1.0, 5.0),
         mutableListOf(3.0, -2.0, 4.0)
     )
+    val a2 = matrixOf(
+        mutableListOf(0.0, 4.0, -2.0),
+        mutableListOf(-4.0, -3.0, 0.0)
+    )
+    val a2_2 = matrixOf(
+        mutableListOf(0.0, 1.0),
+        mutableListOf(1.0, -1.0),
+        mutableListOf(2.0, 3.0)
+    )
+
+    val result = a2 * a2_2
     val a3 = a1.inverse()
     val a4 = Matrix(2, 2)
+
+    val X = matrixOf(
+        mutableListOf(2.0, 3.0),
+        mutableListOf(-1.0, 4.0)
+    )
+    val y = matrixOf(
+        mutableListOf(1.0),
+        mutableListOf(2.0)
+    )
+    val res = testNN(X, y)
+    val a = 1
+
+}
+
+fun testNN(X: Matrix, y: Matrix): Matrix {
+    val XT = X.T
+    val w = (XT * X).inverse() * XT * y
+    return w.T
 }

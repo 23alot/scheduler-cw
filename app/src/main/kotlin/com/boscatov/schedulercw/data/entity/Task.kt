@@ -3,6 +3,7 @@ package com.boscatov.schedulercw.data.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Calendar
 import java.util.Date
 
 @Entity
@@ -16,7 +17,21 @@ data class Task(
     @ColumnInfo(name = "task_priority") val taskPriority: Int,
     @ColumnInfo(name = "task_is_done") val taskIsDone: Boolean = false,
     @ColumnInfo(name = "task_status") val taskStatus: TaskStatus = TaskStatus.PENDING
-)
+) {
+    fun castToNNvalues(): Pair<ArrayList<Double>, Double> {
+        val values = arrayListOf<Double>()
+        values.add(taskDuration.toDouble())
+        values.add(taskPriority.toDouble())
+        return Pair(values, startDateToDouble())
+    }
+
+    private fun startDateToDouble(): Double {
+        val value = Calendar.getInstance()
+        value.time = taskDateStart
+        val result = value.get(Calendar.DAY_OF_WEEK).toDouble() * value.get(Calendar.HOUR_OF_DAY) * value.get(Calendar.MINUTE)
+        return result
+    }
+}
 
 enum class TaskStatus {
     ABANDONED, WAIT_FOR_ACTION, DONE, ACTIVE, PENDING

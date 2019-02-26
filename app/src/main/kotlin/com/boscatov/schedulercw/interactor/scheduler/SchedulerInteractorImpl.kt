@@ -1,7 +1,12 @@
 package com.boscatov.schedulercw.interactor.scheduler
 
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
 import com.boscatov.schedulercw.di.Scopes
+import com.boscatov.schedulercw.worker.ActiveTaskWorker
 import io.reactivex.Completable
 import toothpick.Toothpick
 import javax.inject.Inject
@@ -17,7 +22,12 @@ class SchedulerInteractorImpl : SchedulerInteractor {
 
     override fun startTaskCompletable(taskId: Long): Completable {
         return Completable.create {
-
+            val task = taskRepository.getTask(taskId)
+            task.taskStatus = TaskStatus.ACTIVE
+            taskRepository.saveTask(task)
+            // Вызов ActiveTaskWorker
+            val activeTaskWorker = OneTimeWorkRequestBuilder<ActiveTaskWorker>().build()
+            WorkManager.getInstance().beginUniqueWork("ActiveTask", ExistingWorkPolicy.REPLACE, activeTaskWorker).enqueue()
         }
     }
 
