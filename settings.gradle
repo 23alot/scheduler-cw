@@ -1,1 +1,1 @@
-include ':app', ':matrix'
+include ':app', ':matrix', ':chart'

@@ -74,7 +74,7 @@ class Matrix() {
     }
 
     private fun adjoint(m: Matrix): Matrix {
-        var sign = 1
+        var sign: Int
         val n = m.matrix.size
         val adj = Matrix(n, n)
         for (i in 0 until n) {

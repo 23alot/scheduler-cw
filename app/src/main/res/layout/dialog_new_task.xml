@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_margin="16dp">
 
     <TextView
         android:id="@+id/dialogNewTaskTitleTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Task name"
         app:layout_constraintBottom_toTopOf="@+id/dialogNewTaskTitleETV"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -19,6 +20,8 @@
         android:id="@+id/dialogNewTaskTitleETV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="test title"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDescriptionTV"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -28,6 +31,7 @@
         android:id="@+id/dialogNewTaskDescriptionTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Task description"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDescriptionETV"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,6 +42,8 @@
         android:id="@+id/dialogNewTaskDescriptionETV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="test description"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskStartDateTV"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -47,6 +53,7 @@
         android:id="@+id/dialogNewTaskStartDateTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Date start"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskStartDateTextView"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -57,6 +64,7 @@
         android:id="@+id/dialogNewTaskStartDateTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
         android:text="Date"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDurationTV"
@@ -68,6 +76,7 @@
         android:id="@+id/dialogNewTaskStartTimeTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"
         android:text="Time"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskDurationTV"
@@ -79,6 +88,7 @@
         android:id="@+id/dialogNewTaskDurationTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Duration"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -89,9 +99,11 @@
         android:id="@+id/dialogNewTaskDurationSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:digits="0123456789"
         android:inputType="number|textVisiblePassword"
         android:hint="15"
+        android:text="15"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskAllowAutoTimeCB"
         app:layout_constraintLeft_toRightOf="@id/dialogNewTaskDurationTV"
         app:layout_constraintRight_toRightOf="parent"
@@ -101,6 +113,7 @@
         android:id="@+id/dialogNewTaskAllowAutoTimeCB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Allow Autotime"
         app:layout_constraintBottom_toTopOf="@id/dialogNewTaskChoosePriorityRG"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -110,6 +123,7 @@
         android:id="@+id/dialogNewTaskChoosePriorityRG"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="horizontal"
         android:checkedButton="@+id/dialogNewTaskPriority3"
         app:layout_constraintBottom_toTopOf="@+id/dialogNewTaskColorChooseTV"
@@ -121,6 +135,7 @@
             android:id="@+id/dialogNewTaskPriority1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="1" />
 
@@ -128,6 +143,7 @@
             android:id="@+id/dialogNewTaskPriority2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="2" />
 
@@ -135,6 +151,7 @@
             android:id="@+id/dialogNewTaskPriority3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="3" />
 
@@ -142,6 +159,7 @@
             android:id="@+id/dialogNewTaskPriority4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="4" />
 
@@ -149,6 +167,7 @@
             android:id="@+id/dialogNewTaskPriority5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:layout_weight="1"
             android:text="5" />
     </RadioGroup>
@@ -157,6 +176,7 @@
         android:id="@+id/dialogNewTaskColorChooseTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:text="Color"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/dialogNewTaskColorChooseSpinner"
@@ -166,6 +186,7 @@
         android:id="@+id/dialogNewTaskColorChooseSpinner"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:layout_constraintLeft_toRightOf="@id/dialogNewTaskColorChooseTV"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogNewTaskChoosePriorityRG" />
