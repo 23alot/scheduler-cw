@@ -5,6 +5,9 @@ import com.boscatov.schedulercw.data.entity.TaskStatus
 import java.util.Date
 
 interface TaskInteractor {
+    // TODO: Переделать на observable
+
+
     fun getTasks(): List<Task>
 
     fun getDateTasks(date: Date): List<Task>

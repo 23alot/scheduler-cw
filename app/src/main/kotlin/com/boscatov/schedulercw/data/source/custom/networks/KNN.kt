@@ -1,4 +1,4 @@
-package com.boscatov.schedulercw.networks
+package com.boscatov.schedulercw.data.source.custom.networks
 
 import com.boscatov.schedulercw.data.entity.Task
 

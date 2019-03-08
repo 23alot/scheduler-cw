@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/bottomMenuCalendarAction"
+            android:id="@+id/bottomMenuChaosAction"
             android:enabled="true"
-            android:icon="@drawable/ic_date_range_black_24dp"
-            android:title="@string/bottom_menu_calendar_action"
+            android:icon="@drawable/ic_chaos_24dp"
+            android:title="@string/bottom_menu_chaos_action"
             app:showAsAction="ifRoom" />
 
         <item

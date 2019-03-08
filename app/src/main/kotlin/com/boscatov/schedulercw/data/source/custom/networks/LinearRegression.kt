@@ -1,7 +1,6 @@
-package com.boscatov.schedulercw.networks
+package com.boscatov.schedulercw.data.source.custom.networks
 
 import android.graphics.Color
-import android.util.Log
 import com.boscatov.matrix.Matrix
 import com.boscatov.schedulercw.data.entity.Task
 import java.util.Calendar

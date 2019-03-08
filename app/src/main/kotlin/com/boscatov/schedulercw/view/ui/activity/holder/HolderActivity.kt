@@ -1,7 +1,6 @@
 package com.boscatov.schedulercw.view.ui.activity.holder
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,9 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.work.WorkManager
 import com.boscatov.schedulercw.R
-import com.boscatov.schedulercw.R.id.toolbarDone
 import com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment
 import com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment
 import com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment
@@ -53,7 +50,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.bottomMenuCalendarAction -> navController.navigate(R.id.calendarFragment)
+            R.id.bottomMenuChaosAction -> navController.navigate(R.id.calendarFragment)
             R.id.bottomMenuHomeAction -> navController.navigate(R.id.taskListFragment)
             R.id.bottomMenuStatsAction -> navController.navigate(R.id.statsFragment)
         }
@@ -86,7 +83,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     private fun initializeBottomNavigationView() {
         val id = when (navController.currentDestination?.label) {
             TaskListFragment::class.java.simpleName -> R.id.bottomMenuHomeAction
-            CalendarFragment::class.java.simpleName -> R.id.bottomMenuCalendarAction
+            CalendarFragment::class.java.simpleName -> R.id.bottomMenuChaosAction
             StatsFragment::class.java.simpleName -> R.id.bottomMenuStatsAction
             else -> R.id.bottomMenuHomeAction
         }
