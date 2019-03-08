@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GOOOOOOOODBYE"
-        android:textSize="50sp" />
+    <com.androidplot.xy.XYPlot
+        style="@style/APDefacto.Light"
+        android:id="@+id/fragmentStatsPlot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:title="A Simple XY Plot"
+        app:gridInsetLeft="35dp"
+        app:gridInsetRight="8dp"
+        app:domainLineThickness="0dp"
+        app:rangeLineThickness="0dp"
+        app:rangeTitle="range"
+        app:domainTitle="domain"
+        app:lineLabels="left|bottom" />
 </LinearLayout>
