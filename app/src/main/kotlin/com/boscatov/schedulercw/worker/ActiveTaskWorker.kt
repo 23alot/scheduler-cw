@@ -13,7 +13,11 @@ import io.reactivex.internal.operators.observable.ObservableInterval
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class ActiveTaskWorker(private val context: Context, params: WorkerParameters, private val activeTask: Task) :
+class ActiveTaskWorker(
+    private val context: Context,
+    params: WorkerParameters,
+    private val activeTask: Task
+) :
     Worker(context, params) {
     override fun doWork(): Result {
         val remoteViews = RemoteViews(context.packageName, R.layout.notification_progress)

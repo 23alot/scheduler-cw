@@ -11,9 +11,7 @@ import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractor
 import toothpick.Toothpick
 import javax.inject.Inject
 
-class NotificationTaskReceiver : BroadcastReceiver() {
-    @Inject
-    lateinit var schedulerInteractor: SchedulerInteractor
+class NotificationTaskReceiver @Inject constructor(private val schedulerInteractor: SchedulerInteractor): BroadcastReceiver() {
 
     init {
         val scope = Toothpick.openScope(Scopes.TASK_SCOPE)

@@ -1,5 +1,6 @@
 package com.boscatov.schedulercw.view.viewmodel.holder
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -18,6 +19,10 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 class MainViewModel : ViewModel() {
+    companion object {
+        private const val TAG = "MainViewModel"
+        const val TASK_WORKER_TAG = "Monitor notification worker"
+    }
     var state = MutableLiveData<State>()
 
     fun initNotificationWorker() {
@@ -25,14 +30,15 @@ class MainViewModel : ViewModel() {
             .concatMap<Any> { i -> Observable.just(i).delay(3, TimeUnit.MINUTES) }
             .doOnNext { i ->
                 val nearestTaskBuilder = PeriodicWorkRequestBuilder<NearestTaskWorker>(15, TimeUnit.MINUTES)
-                nearestTaskBuilder.addTag(TASK_WORKER_TAG+"_$i")
+                Log.d(TAG, "${TASK_WORKER_TAG}_$i ${System.currentTimeMillis()/1000}")
+                nearestTaskBuilder.addTag("${TASK_WORKER_TAG}_$i")
                 val nearestTask = nearestTaskBuilder.build()
-                WorkManager.getInstance().enqueueUniquePeriodicWork(TASK_WORKER_TAG+"_$i", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
+                WorkManager.getInstance().enqueueUniquePeriodicWork("${TASK_WORKER_TAG}_$i", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
             }.doOnComplete { }.observeOn(Schedulers.io()).subscribe()
         val nearestTaskBuilder = PeriodicWorkRequestBuilder<NearestTaskWorker>(15, TimeUnit.MINUTES)
-        nearestTaskBuilder.addTag(TASK_WORKER_TAG+"_0")
+        nearestTaskBuilder.addTag("${TASK_WORKER_TAG}_0")
         val nearestTask = nearestTaskBuilder.build()
-        WorkManager.getInstance().enqueueUniquePeriodicWork(TASK_WORKER_TAG+"_0", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
+        WorkManager.getInstance().enqueueUniquePeriodicWork("${TASK_WORKER_TAG}_0", ExistingPeriodicWorkPolicy.REPLACE, nearestTask)
     }
 
     fun testNetwork() {
@@ -53,9 +59,5 @@ class MainViewModel : ViewModel() {
 
     fun onNewTaskComplete() {
         state.value = DefaultState()
-    }
-
-    companion object {
-        const val TASK_WORKER_TAG = "Monitor notification worker"
     }
 }

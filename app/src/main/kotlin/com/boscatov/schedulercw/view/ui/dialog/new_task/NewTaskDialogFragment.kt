@@ -31,7 +31,6 @@ import java.util.TimeZone
 
 class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private var currentPicker: TextView? = null
     lateinit var mainViewModel: MainViewModel
     lateinit var newTaskViewModel: NewTaskViewModel
 
@@ -106,25 +105,22 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val day = c.get(Calendar.DAY_OF_MONTH)
         val minute = c.get(Calendar.MINUTE)
         val hour = c.get(Calendar.HOUR_OF_DAY)
-        dialogNewTaskStartDateTextView.text = "Date"
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("dd MMMM, yyyy")
+        dialogNewTaskStartDateTextView.setText(dateFormat.format(calendar.time))
 
         dialogNewTaskStartDateTextView.setOnClickListener {
             val date = DatePickerDialog(activity, this, year, month, day)
-            currentPicker = it as TextView
             date.show()
         }
 
         dialogNewTaskStartTimeTextView.setOnClickListener {
             val time = TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
-            currentPicker = it as TextView
             time.show()
         }
 
-        dialogNewTaskDurationSpinner.setOnClickListener {
-            val time = TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
-            currentPicker = it as TextView
-            time.show()
-        }
+        val timeFormat = SimpleDateFormat("HH:mm")
+        dialogNewTaskStartTimeTextView.setText(timeFormat.format(calendar.time))
 
         val spinnerAdapter = ColorChooseAdapter(context!!, R.layout.spinner_color_choose)
         dialogNewTaskColorChooseSpinner.adapter = spinnerAdapter
@@ -135,7 +131,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val date = Calendar.getInstance()
         date.set(year, month, day)
         val format = SimpleDateFormat("dd MMMM, yyyy")
-        currentPicker?.setText(format.format(date.time))
+        dialogNewTaskStartDateTextView.setText(format.format(date.time))
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -144,6 +140,6 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         date.set(Calendar.MINUTE, minute)
         date.set(Calendar.HOUR_OF_DAY, hourOfDay)
         val format = SimpleDateFormat("HH:mm")
-        currentPicker?.setText(format.format(date.time))
+        dialogNewTaskStartTimeTextView.setText(format.format(date.time))
     }
 }
