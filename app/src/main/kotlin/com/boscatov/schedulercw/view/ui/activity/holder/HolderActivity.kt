@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.boscatov.schedulercw.R
-import com.boscatov.schedulercw.view.ui.fragment.calendar.CalendarFragment
+import com.boscatov.schedulercw.view.ui.fragment.chaos.ChaosFragment
 import com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment
 import com.boscatov.schedulercw.view.ui.fragment.task_list.TaskListFragment
 import com.boscatov.schedulercw.view.ui.state.DefaultState
@@ -83,7 +83,7 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
     private fun initializeBottomNavigationView() {
         val id = when (navController.currentDestination?.label) {
             TaskListFragment::class.java.simpleName -> R.id.bottomMenuHomeAction
-            CalendarFragment::class.java.simpleName -> R.id.bottomMenuChaosAction
+            ChaosFragment::class.java.simpleName -> R.id.bottomMenuChaosAction
             StatsFragment::class.java.simpleName -> R.id.bottomMenuStatsAction
             else -> R.id.bottomMenuHomeAction
         }

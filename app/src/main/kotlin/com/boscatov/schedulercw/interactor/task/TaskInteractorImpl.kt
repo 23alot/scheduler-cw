@@ -4,8 +4,10 @@ import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
 import com.boscatov.schedulercw.di.Scopes
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 class TaskInteractorImpl : TaskInteractor {
@@ -20,6 +22,17 @@ class TaskInteractorImpl : TaskInteractor {
 
     override fun getTasks(): List<Task> {
         return taskRepository.getTasks()
+    }
+
+    override fun getTasks(taskStatus: Array<TaskStatus>): Observable<List<Task>> {
+        return Observable.create<List<Task>> {
+            val intStatus = IntArray(taskStatus.size) {i ->
+                taskStatus[i].ordinal
+            }
+            val tasks = taskRepository.getTasks(intStatus)
+            it.onNext(tasks)
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun getDateTasks(date: Date): List<Task> {

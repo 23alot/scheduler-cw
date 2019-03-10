@@ -18,7 +18,7 @@
         <item name="android:tint">@color/colorWhite</item>
     </style>
 
-    <style name="BottomNavigationBar" parent="AppTheme">
+    <style name="DarkTint" parent="AppTheme">
         <item name="android:tint">@color/colorBlack</item>
     </style>
 

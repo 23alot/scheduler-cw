@@ -35,7 +35,7 @@
                 app:navGraph="@navigation/nav_graph"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:theme="@style/BottomNavigationBar"
+                android:theme="@style/DarkTint"
                 android:id="@+id/activityHolderBottomNV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.boscatov.schedulercw.interactor.scheduler
 
+import android.util.Log
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -12,6 +13,11 @@ import toothpick.Toothpick
 import javax.inject.Inject
 
 class SchedulerInteractorImpl : SchedulerInteractor {
+
+    companion object {
+        private const val TAG = "SchedulerInteractorImpl"
+    }
+
     @Inject
     lateinit var taskRepository: TaskRepository
 
@@ -21,26 +27,41 @@ class SchedulerInteractorImpl : SchedulerInteractor {
     }
 
     override fun startTaskCompletable(taskId: Long): Completable {
+        Log.d(TAG, "start task $taskId")
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.ACTIVE
-            taskRepository.saveTask(task)
+            taskRepository.updateTask(task)
             // Вызов ActiveTaskWorker
             val activeTaskWorker = OneTimeWorkRequestBuilder<ActiveTaskWorker>().build()
-            WorkManager.getInstance().beginUniqueWork("ActiveTask", ExistingWorkPolicy.REPLACE, activeTaskWorker).enqueue()
+            WorkManager.getInstance().enqueueUniqueWork("ActiveTask", ExistingWorkPolicy.REPLACE, activeTaskWorker)
         }
     }
 
     override fun completeTaskCompletable(taskId: Long): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d(TAG, "complete task $taskId")
+        return Completable.create {
+            val task = taskRepository.getTask(taskId)
+            task.taskStatus = TaskStatus.DONE
+            taskRepository.updateTask(task)
+        }
     }
 
     override fun notifyTaskShouldBeEndedCompletable(taskId: Long): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Completable.create {
+            val task = taskRepository.getTask(taskId)
+            task.taskStatus = TaskStatus.WAIT_FOR_ACTION
+            taskRepository.updateTask(task)
+        }
     }
 
     override fun abandonTaskCompletable(taskId: Long): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d(TAG, "abandon task $taskId")
+        return Completable.create {
+            val task = taskRepository.getTask(taskId)
+            task.taskStatus = TaskStatus.ABANDONED
+            taskRepository.updateTask(task)
+        }
     }
 
 }

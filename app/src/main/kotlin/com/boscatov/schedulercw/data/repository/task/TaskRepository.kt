@@ -9,11 +9,15 @@ interface TaskRepository {
 
     fun getTasks(): List<Task>
 
+    fun getTasks(taskStatus: IntArray): List<Task>
+
     fun getDateTask(date: Date): List<Task>
 
     fun getNearestTask(): Task?
 
     fun saveTask(task: Task)
+
+    fun updateTask(task: Task)
 
     fun getLatestTask(taskStatus: IntArray): Task?
 }

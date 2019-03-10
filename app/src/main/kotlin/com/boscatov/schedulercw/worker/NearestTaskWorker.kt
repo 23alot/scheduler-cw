@@ -17,6 +17,7 @@ import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.TASK_ACTION
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.entity.TaskAction
+import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import com.boscatov.schedulercw.receiver.NotificationTaskReceiver
@@ -25,7 +26,10 @@ import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 
-class NearestTaskWorker(private val context: Context, params: WorkerParameters) : Worker(context, params) {
+class NearestTaskWorker(
+    private val context: Context,
+    params: WorkerParameters
+) : Worker(context, params) {
 
     @Inject
     lateinit var taskInteractor: TaskInteractor
@@ -42,7 +46,7 @@ class NearestTaskWorker(private val context: Context, params: WorkerParameters) 
 
     private fun sendNotificationStart(task: Task?) {
         createNotificationChannel()
-//        if (task?.taskStatus == TaskStatus.ACTIVE) return
+        if (task?.taskStatus == TaskStatus.ACTIVE) return
         val remoteViews: RemoteViews
         if (task != null) {
             remoteViews = RemoteViews(context.packageName, R.layout.notification_start)
@@ -51,19 +55,19 @@ class NearestTaskWorker(private val context: Context, params: WorkerParameters) 
                 R.id.notificationStartTimeTV,
                 SimpleDateFormat("HH:mm").format(task.taskDateStart)
             )
-            val intent = Intent(Actions.NOTIFICATION_TASK).also { intent ->
-                intent.putExtra(TASK_ACTION, TaskAction.START.ordinal)
-                context.sendBroadcast(intent)
+            val intent = Intent(Actions.NOTIFICATION_TASK).also {
+                it.putExtra(TASK_ACTION, TaskAction.START.ordinal)
+                it.setClass(context, NotificationTaskReceiver::class.java)
             }
-            intent.setClass(context, NotificationTaskReceiver::class.java)
+
             val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
             remoteViews.setOnClickPendingIntent(R.id.notificationStartIB, pendingIntent)
-            val intent2 = Intent(Actions.NOTIFICATION_TASK).also { intent ->
-                intent.putExtra(TASK_ACTION, TaskAction.ABANDON.ordinal)
-                context.sendBroadcast(intent)
+
+            val intent2 = Intent(Actions.NOTIFICATION_TASK).also {
+                it.putExtra(TASK_ACTION, TaskAction.ABANDON.ordinal)
+                it.setClass(context, NotificationTaskReceiver::class.java)
             }
-            intent2.setClass(context, NotificationTaskReceiver::class.java)
-            val pendingIntent2 = PendingIntent.getBroadcast(context, 0, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingIntent2 = PendingIntent.getBroadcast(context, 1, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
             remoteViews.setOnClickPendingIntent(R.id.notificationStartCancelIB, pendingIntent2)
         } else {
             remoteViews = RemoteViews(context.packageName, R.layout.notification_no_tasks)
