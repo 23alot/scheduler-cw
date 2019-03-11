@@ -100,6 +100,10 @@ class Matrix() {
         return inverse
     }
 
+    operator fun iterator(): Iterator<MutableList<Double>> {
+        return matrix.iterator()
+    }
+
     operator fun times(other: Matrix): Matrix {
         if (other.matrix.size != this.matrix[0].size) {
             throw IllegalArgumentException("Not valid dimensions")
