@@ -13,7 +13,7 @@ data class Task(
     @ColumnInfo(name = "task_description") val taskDescription: String,
     @ColumnInfo(name = "task_color") val taskColor: Int,
     @ColumnInfo(name = "task_duration") val taskDuration: Int,
-    @ColumnInfo(name = "task_date_start") val taskDateStart: Date,
+    @ColumnInfo(name = "task_date_start") var taskDateStart: Date,
     @ColumnInfo(name = "task_priority") val taskPriority: Int,
     @ColumnInfo(name = "task_is_done") val taskIsDone: Boolean = false,
     @ColumnInfo(name = "task_status") var taskStatus: TaskStatus = TaskStatus.PENDING

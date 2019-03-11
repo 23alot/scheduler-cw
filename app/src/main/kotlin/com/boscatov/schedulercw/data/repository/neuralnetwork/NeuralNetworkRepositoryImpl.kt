@@ -4,12 +4,13 @@ import com.boscatov.matrix.Matrix
 import com.boscatov.matrix.matrixOf
 import com.boscatov.schedulercw.data.entity.Task
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Created by boscatov on 08.03.2019.
  */
 
-class NeuralNetworkRepositoryImpl : NeuralNetworkRepository {
+class NeuralNetworkRepositoryImpl @Inject constructor(): NeuralNetworkRepository {
     private var X = matrixOf()
     private val y = matrixOf()
     private val mean = mutableListOf<Double>()
@@ -41,8 +42,11 @@ class NeuralNetworkRepositoryImpl : NeuralNetworkRepository {
                 )
             )
 
-            normalize()
+
         }
+
+        normalize()
+
         val XT = X.T
         w = (XT * X).inverse() * XT * y
     }
@@ -77,19 +81,27 @@ class NeuralNetworkRepositoryImpl : NeuralNetworkRepository {
      * Используется z-score normalization
      */
     private fun normalize() {
+        mean.clear()
+        this.s.clear()
         val XT = X.T
+        val matrix = matrixOf()
         for (row in XT) {
             var s = 0.0
             var verh = 0.0
             val count = row.count()
             row.forEach { s += it }
             s /= count
-            row.forEach { verh += it - s }
-            val result = Math.sqrt(Math.pow(verh, 2.0) / count)
-            row.map { (it - s) / result }
+            row.forEach { verh += Math.pow(it - s, 2.0) }
+            var result = Math.sqrt(verh / count)
+            if (result == 0.0) {
+                result = 1.0
+            }
+
+            matrix.addRow(row.map { (it - s) / result }.toMutableList())
             mean.add(s)
             this.s.add(result)
         }
-        X = XT.T
+        //TODO: Веса становятся NaN скорее всего в inverse det=0
+        X = matrix.T
     }
 }

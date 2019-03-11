@@ -45,6 +45,7 @@ class ChaosFragment : Fragment() {
             chaosListAdapter.setTasks(it)
         })
 
-        chaosViewModel.loadTasks()
+        chaosViewModel.onLoadTasks()
+        fragmentChaosSortTasksFAB.setOnClickListener { chaosViewModel.onPredictTasks() }
     }
 }

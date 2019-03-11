@@ -11,5 +11,5 @@ interface SchedulerAlgorithmRepository {
     /**
      * Запускает алгоритм
      */
-    fun start(taskDates: List<TaskDate>): List<Date>
+    fun start(taskDates: List<List<TaskDate>>): List<Date>
 }

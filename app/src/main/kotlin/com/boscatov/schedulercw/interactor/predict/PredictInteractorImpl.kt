@@ -11,7 +11,7 @@ import com.boscatov.schedulercw.data.repository.task.TaskRepository
 import io.reactivex.Emitter
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -37,18 +37,28 @@ class PredictInteractorImpl @Inject constructor(
         }.subscribeOn(Schedulers.io())
     }
 
-    private fun neuralPredict(tasks: List<Task>, allTasks: List<Task>): List<TaskDate> {
+    private fun neuralPredict(tasks: List<Task>, allTasks: List<Task>): List<List<TaskDate>> {
         neuralNetworkRepository.fit(allTasks)
-        val predictDates = mutableListOf<TaskDate>()
+        val now = Calendar.getInstance().time
+        val predictDates = mutableListOf<List<TaskDate>>()
         tasks.forEach {
-            val predict = neuralNetworkRepository.predict(it)
-            predictDates.add(TaskDate(predict, it.taskDuration))
+            val calendar = Calendar.getInstance()
+            val taskPredict = mutableListOf<TaskDate>()
+            for (i in 1..4) {
+                it.taskDateStart = calendar.time
+                val predict = neuralNetworkRepository.predict(it)
+                if (predict > now) {
+                    taskPredict.add(TaskDate(predict, it.taskDuration))
+                }
+                calendar.add(Calendar.DAY_OF_WEEK, 1)
+            }
+            predictDates.add(taskPredict)
         }
 
         return predictDates
     }
 
-    private fun schedulerAlgorithm(predictDates: List<TaskDate>): List<Date> {
+    private fun schedulerAlgorithm(predictDates: List<List<TaskDate>>): List<Date> {
         return schedulerAlgorithmRepository.start(predictDates)
     }
 }
