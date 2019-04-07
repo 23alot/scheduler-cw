@@ -8,8 +8,5 @@ import java.util.Date
  */
 
 interface SchedulerAlgorithmRepository {
-    /**
-     * Запускает алгоритм
-     */
-    fun start(taskDates: List<List<TaskDate>>): List<Date>
+    fun schedule(tasks: List<SchedulerData>, reserved: List<ReservedData>): List<SchedulerData>
 }

@@ -9,6 +9,7 @@ import com.boscatov.schedulercw.interactor.predict.PredictInteractor
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import toothpick.Toothpick
+import java.util.*
 import javax.inject.Inject
 
 class ChaosViewModel : ViewModel() {
@@ -36,6 +37,5 @@ class ChaosViewModel : ViewModel() {
         tasks.value?.let {
             predictInteractor.predict(it).observeOn(AndroidSchedulers.mainThread()).subscribe {  }
         }
-
     }
 }

@@ -14,6 +14,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.TimePicker
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -46,7 +47,6 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initSpinner()
         mainViewModel = activity?.run {
             ViewModelProviders.of(this).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
@@ -54,6 +54,20 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             changeState(it)
         })
         newTaskViewModel = ViewModelProviders.of(this).get(NewTaskViewModel::class.java)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initSpinner()
+        dialogNewTaskAllowAutoTimeCB.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                dialogNewTaskDeadlineGroup.visibility = View.VISIBLE
+                dialogNewTaskDateGroup.visibility = View.GONE
+            } else {
+                dialogNewTaskDeadlineGroup.visibility = View.GONE
+                dialogNewTaskDateGroup.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun changeState(state: State) {
@@ -77,25 +91,49 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val radioButton = view?.findViewById<RadioButton>(dialogNewTaskChoosePriorityRG.checkedRadioButtonId)
         val priority = radioButton?.text.toString().toInt()
         val color = dialogNewTaskColorChooseSpinner.selectedItem as Int
-        val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(startDate)
-        val timeFormat = SimpleDateFormat("HH:mm").parse(startTime)
-        val date = Calendar.getInstance()
-        date.time = dateFormat
-        val time = Calendar.getInstance()
-        time.time = timeFormat
-
-        date.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY))
-        date.set(Calendar.MINUTE, time.get(Calendar.MINUTE))
+        val deadlineDate = dialogNewTaskDeadlineDateTV.text.toString()
+        val deadlineTime = dialogNewTaskDeadlineTimeTV.text.toString()
 
 
-        return Task(
-            taskTitle = title,
-            taskDescription = description,
-            taskColor = color,
-            taskDateStart = date.time,
-            taskDuration = duration,
-            taskPriority = priority
-        )
+        if (dialogNewTaskAllowAutoTimeCB.isChecked) {
+            val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(deadlineDate)
+            val timeFormat = SimpleDateFormat("HH:mm").parse(deadlineTime)
+            val date = Calendar.getInstance()
+            date.time = dateFormat
+            val time = Calendar.getInstance()
+            time.time = timeFormat
+
+            date.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY))
+            date.set(Calendar.MINUTE, time.get(Calendar.MINUTE))
+
+            return Task(
+                taskTitle = title,
+                taskDescription = description,
+                taskColor = color,
+                taskDuration = duration,
+                taskPriority = priority,
+                taskDeadLine = date.time
+            )
+        } else {
+            val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(startDate)
+            val timeFormat = SimpleDateFormat("HH:mm").parse(startTime)
+            val date = Calendar.getInstance()
+            date.time = dateFormat
+            val time = Calendar.getInstance()
+            time.time = timeFormat
+
+            date.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY))
+            date.set(Calendar.MINUTE, time.get(Calendar.MINUTE))
+
+            return Task(
+                taskTitle = title,
+                taskDescription = description,
+                taskColor = color,
+                taskDateStart = date.time,
+                taskDuration = duration,
+                taskPriority = priority
+            )
+        }
     }
 
     private fun initSpinner() {
@@ -119,6 +157,16 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             time.show()
         }
 
+        dialogNewTaskDeadlineDateTV.setOnClickListener {
+            val date = DatePickerDialog(activity, this, year, month, day)
+            date.show()
+        }
+
+        dialogNewTaskDeadlineTimeTV.setOnClickListener {
+            val time = TimePickerDialog(activity, this, hour, minute, DateFormat.is24HourFormat(activity))
+            time.show()
+        }
+
         val timeFormat = SimpleDateFormat("HH:mm")
         dialogNewTaskStartTimeTextView.setText(timeFormat.format(calendar.time))
 
@@ -131,7 +179,12 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val date = Calendar.getInstance()
         date.set(year, month, day)
         val format = SimpleDateFormat("dd MMMM, yyyy")
-        dialogNewTaskStartDateTextView.setText(format.format(date.time))
+        // TODO: убрать это
+        if (dialogNewTaskDateGroup.isVisible) {
+            dialogNewTaskStartDateTextView.setText(format.format(date.time))
+        } else {
+            dialogNewTaskDeadlineDateTV.setText(format.format(date.time))
+        }
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -140,6 +193,11 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         date.set(Calendar.MINUTE, minute)
         date.set(Calendar.HOUR_OF_DAY, hourOfDay)
         val format = SimpleDateFormat("HH:mm")
-        dialogNewTaskStartTimeTextView.setText(format.format(date.time))
+        // TODO: убрать это
+        if (dialogNewTaskDateGroup.isVisible) {
+            dialogNewTaskStartTimeTextView.setText(format.format(date.time))
+        } else {
+            dialogNewTaskDeadlineTimeTV.setText(format.format(date.time))
+        }
     }
 }

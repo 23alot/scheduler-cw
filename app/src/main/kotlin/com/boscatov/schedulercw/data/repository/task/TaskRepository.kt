@@ -9,6 +9,8 @@ interface TaskRepository {
 
     fun getTasks(): List<Task>
 
+    fun getTasks(date: Date): List<Task>
+
     fun getTasks(taskStatus: IntArray): List<Task>
 
     fun getDateTask(date: Date): List<Task>

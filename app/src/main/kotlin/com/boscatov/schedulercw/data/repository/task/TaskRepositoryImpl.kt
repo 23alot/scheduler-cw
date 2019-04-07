@@ -21,6 +21,10 @@ class TaskRepositoryImpl @Inject constructor() : TaskRepository {
         return database.taskDao().getTasks(taskStatus)
     }
 
+    override fun getTasks(date: Date): List<Task> {
+        return database.taskDao().loadAllByDate(date)
+    }
+
     override fun getDateTask(date: Date): List<Task> {
         val start = Calendar.getInstance()
         start.time = Date(date.time)

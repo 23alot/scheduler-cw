@@ -2,18 +2,21 @@ package com.boscatov.schedulercw.data.source.custom.networks
 
 import com.boscatov.schedulercw.data.entity.Task
 
-class KNN(tasks: List<Task>, private val params: List<Double>, private val k: Int) {
+class KNN(
+    tasks: List<Task>,
+    private val params: List<Double>,
+    private val k: Int) {
     private val dataset = arrayListOf<Data>()
 
     init {
         for (task in tasks) {
             val v1 = task.taskDuration
             val v2 = task.taskPriority
-            dataset.add(Data(v1, v2, (Math.random() * 1000).toLong()))
+            dataset.add(Data(v1, v2, task.taskDateStart!!.time))
         }
     }
 
-    fun predict(task: Task) {
+    fun predict(task: Task): List<Long> {
         val v1 = task.taskDuration
         val v2 = task.taskPriority
         val distances = arrayListOf<Pair<Double, Long>>()
@@ -21,16 +24,18 @@ class KNN(tasks: List<Task>, private val params: List<Double>, private val k: In
             distances.add(Pair(calculateDistance(v1, v2, d), d.ans))
         }
         distances.sortWith(Comparator { a, b -> compareValues(a.first, b.first) })
-        // TODO: Поиск наибольшего числа соседей
+
         val map = mutableMapOf<Long, Int>()
         for (i in 0 until k) {
             if (map[distances[i].second] != null) {
                 map[distances[i].second]?.inc()
             } else {
-                map[distances[i].second] = 0
+                map[distances[i].second] = 1
             }
         }
-        map.toList().sortedBy { (_, value) -> value }[0]
+        val result = map.toList().sortedBy { (_, value) -> value }.map { it.first }
+
+        return result
     }
 
     private fun calculateDistance(v1: Int, v2: Int, d: Data): Double {

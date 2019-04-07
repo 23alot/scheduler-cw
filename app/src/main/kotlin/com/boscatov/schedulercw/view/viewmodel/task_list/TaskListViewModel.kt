@@ -40,8 +40,10 @@ class TaskListViewModel : ViewModel() {
         val id = tasks.value?.lastIndex
         tasks.value?.let {
             for ((i, task) in it.withIndex()) {
-                if (task.taskDateStart > now) {
-                    return i
+                task.taskDateStart?.let { date ->
+                    if (date > now) {
+                        return i
+                    }
                 }
             }
         }

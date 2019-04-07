@@ -22,6 +22,9 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE task_date_start BETWEEN :from AND :to ORDER BY task_date_start")
     fun loadAllByDate(from: Date, to: Date): List<Task>
 
+    @Query("SELECT * FROM task WHERE task_date_start > :from ORDER BY task_date_start")
+    fun loadAllByDate(from: Date): List<Task>
+
     @Query("SELECT * FROM task WHERE task_date_start BETWEEN :from AND :to ORDER BY task_date_start LIMIT 1")
     fun getNearestTask(from: Date, to: Date): Task
 

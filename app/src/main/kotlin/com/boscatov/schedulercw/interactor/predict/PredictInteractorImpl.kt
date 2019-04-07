@@ -1,14 +1,12 @@
 package com.boscatov.schedulercw.interactor.predict
 
-import com.boscatov.schedulercw.data.entity.OnCompletePredictEvent
-import com.boscatov.schedulercw.data.entity.OnNextPredictEvent
-import com.boscatov.schedulercw.data.entity.PredictEvent
-import com.boscatov.schedulercw.data.entity.Task
-import com.boscatov.schedulercw.data.entity.TaskDate
+import com.boscatov.schedulercw.data.entity.*
 import com.boscatov.schedulercw.data.repository.neuralnetwork.NeuralNetworkRepository
+import com.boscatov.schedulercw.data.repository.scheduler_algorithm.ReservedData
 import com.boscatov.schedulercw.data.repository.scheduler_algorithm.SchedulerAlgorithmRepository
+import com.boscatov.schedulercw.data.repository.scheduler_algorithm.SchedulerData
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
-import io.reactivex.Emitter
+import com.boscatov.schedulercw.data.source.custom.networks.KNN
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
@@ -19,10 +17,10 @@ import javax.inject.Inject
  */
 
 class PredictInteractorImpl @Inject constructor(
-        private val taskRepository: TaskRepository,
-        private val neuralNetworkRepository: NeuralNetworkRepository,
-        private val schedulerAlgorithmRepository: SchedulerAlgorithmRepository
-): PredictInteractor {
+    private val taskRepository: TaskRepository,
+    private val neuralNetworkRepository: NeuralNetworkRepository,
+    private val schedulerAlgorithmRepository: SchedulerAlgorithmRepository
+) : PredictInteractor {
 
     // TODO: Подобрать значения progress
     override fun predict(tasks: List<Task>): Observable<PredictEvent> {
@@ -37,28 +35,47 @@ class PredictInteractorImpl @Inject constructor(
         }.subscribeOn(Schedulers.io())
     }
 
-    private fun neuralPredict(tasks: List<Task>, allTasks: List<Task>): List<List<TaskDate>> {
-        neuralNetworkRepository.fit(allTasks)
+    private fun neuralPredict(tasks: List<Task>, allTasks: List<Task>): List<Pair<Task, List<Long>>> {
+//        neuralNetworkRepository.fit(allTasks)
         val now = Calendar.getInstance().time
-        val predictDates = mutableListOf<List<TaskDate>>()
+        val predictDates = mutableListOf<Pair<Task, List<Long>>>()
         tasks.forEach {
             val calendar = Calendar.getInstance()
-            val taskPredict = mutableListOf<TaskDate>()
-            for (i in 1..4) {
-                it.taskDateStart = calendar.time
-                val predict = neuralNetworkRepository.predict(it)
-                if (predict > now) {
-                    taskPredict.add(TaskDate(predict, it.taskDuration))
-                }
-                calendar.add(Calendar.DAY_OF_WEEK, 1)
-            }
-            predictDates.add(taskPredict)
+            val knn = KNN(allTasks, listOf(20.0, 15.0), 3)
+            val taskPredict = knn.predict(it)
+            predictDates.add(Pair(it, taskPredict))
         }
 
         return predictDates
     }
 
-    private fun schedulerAlgorithm(predictDates: List<List<TaskDate>>): List<Date> {
-        return schedulerAlgorithmRepository.start(predictDates)
+    private fun schedulerAlgorithm(predictDates: List<Pair<Task, List<Long>>>): List<Date> {
+        val date = Calendar.getInstance().time
+        val existTasks = taskRepository.getTasks(date)
+        val tasks: MutableList<SchedulerData> = mutableListOf()
+        val reserved: MutableList<ReservedData> = mutableListOf()
+        predictDates.forEach { pair ->
+            pair.first.taskDeadLine?.let { deadline ->
+                tasks.add(
+                    SchedulerData(
+                        pair.first.taskPriority,
+                        pair.first.taskDuration * 60 * 1000L,
+                        pair.second,
+                        deadline.time
+                    )
+                )
+            }
+        }
+        existTasks.forEach {
+            it.taskDateStart?.let {date ->
+                reserved.add(
+                    ReservedData(
+                        date.time,
+                        date.time + it.taskDuration * 60 * 1000L
+                    )
+                )
+            }
+        }
+        return schedulerAlgorithmRepository.schedule(tasks, reserved).map { Date(it.resultTime) }
     }
 }
