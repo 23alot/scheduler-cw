@@ -1,5 +1,9 @@
 package com.boscatov.schedulercw.view.ui.fragment.task_list
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boscatov.schedulercw.R
@@ -23,6 +28,7 @@ class TaskListFragment : Fragment() {
     lateinit var mainViewModel: MainViewModel
     lateinit var taskListViewModel: TaskListViewModel
     private val taskListAdapter: TaskAdapter = TaskAdapter(arrayListOf())
+    private val receiver = UpdateReceiver()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_task_list, container, false)
@@ -70,8 +76,29 @@ class TaskListFragment : Fragment() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        val intentFilter = IntentFilter("com.boscatov.schedulercw.updatelist")
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, intentFilter)
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+        super.onPause()
+    }
+
     private fun changeTitle(date: Date) {
         val formatter = SimpleDateFormat("dd")
         taskListFragmentTitle.setText(formatter.format(date))
+    }
+
+    inner class UpdateReceiver: BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                when(it.action) {
+                    "com.boscatov.schedulercw.updatelist" -> taskListViewModel.loadData()
+                }
+            }
+        }
     }
 }

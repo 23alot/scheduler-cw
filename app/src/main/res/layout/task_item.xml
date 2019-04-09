@@ -17,30 +17,29 @@
                 android:id="@+id/taskItemStartTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:text="09:00"
                 android:textSize="20sp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toTopOf="@id/taskItemEndTimeTV"
-                app:layout_constraintEnd_toStartOf="@+id/taskItemTitleTV"
+                app:layout_constraintEnd_toStartOf="@id/taskItemTitleTV"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/taskItemTitleTV"/>
+                app:layout_constraintBaseline_toBaselineOf="@id/taskItemTitleTV"/>
 
         <TextView
                 android:id="@+id/taskItemEndTimeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:text="10:00"
                 android:textSize="20sp"
                 android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toTopOf="@id/taskItemColorLineIV"
-                app:layout_constraintEnd_toEndOf="@+id/taskItemStartTimeTV"
+                app:layout_constraintEnd_toStartOf="@id/taskItemSubtitleTV"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/taskItemStartTimeTV"
-                app:layout_constraintBaseline_toBaselineOf="@+id/taskItemSubtitleTV"/>
+                app:layout_constraintBaseline_toBaselineOf="@id/taskItemSubtitleTV"/>
 
         <TextView
                 android:id="@+id/taskItemTitleTV"
@@ -59,10 +58,22 @@
                 android:layout_height="wrap_content"
                 android:text="Subtitle"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/taskItemColorLineIV"
-                app:layout_constraintStart_toStartOf="@id/taskItemTitleTV"
+                app:layout_constraintBottom_toTopOf="@id/taskItemDeadlineTV"
+                app:layout_constraintStart_toEndOf="@id/taskItemEndTimeTV"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/taskItemTitleTV"/>
+
+        <TextView
+                android:id="@+id/taskItemDeadlineTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Deadline"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/taskItemColorLineIV"
+                app:layout_constraintStart_toStartOf="@id/taskItemSubtitleTV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/taskItemSubtitleTV"
+        />
 
         <ImageView
                 android:id="@+id/taskItemColorLineIV"

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.boscatov.schedulercw.data.entity.TASK_ACTION
 import com.boscatov.schedulercw.data.entity.TaskAction
 import com.boscatov.schedulercw.data.entity.TaskStatus
@@ -28,7 +29,7 @@ class NotificationTaskReceiver : BroadcastReceiver() {
         Toothpick.inject(this, scope)
     }
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context, intent: Intent?) {
         intent?.let {
             val action = it.getIntExtra(TASK_ACTION, -1)
 
@@ -41,6 +42,8 @@ class NotificationTaskReceiver : BroadcastReceiver() {
                         TaskAction.FINISH -> schedulerInteractor.completeTaskCompletable(task.taskId).subscribe()
                         TaskAction.ABANDON -> schedulerInteractor.abandonTaskCompletable(task.taskId).subscribe()
                     }
+                    val updateIntent = Intent("com.boscatov.schedulercw.updatelist")
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent)
                 }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
 
                 }

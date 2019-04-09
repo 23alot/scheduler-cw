@@ -10,6 +10,7 @@ class KNN(
 
     init {
         for (task in tasks) {
+            if (task.taskDateStart == null) continue
             val v1 = task.taskDuration
             val v2 = task.taskPriority
             dataset.add(Data(v1, v2, task.taskDateStart!!.time))
