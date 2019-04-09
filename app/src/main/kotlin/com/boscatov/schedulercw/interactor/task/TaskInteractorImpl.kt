@@ -20,6 +20,10 @@ class TaskInteractorImpl : TaskInteractor {
         Toothpick.inject(this, scope)
     }
 
+    override fun getTask(taskId: Long): Task {
+        return taskRepository.getTask(taskId)
+    }
+
     override fun getTasks(): List<Task> {
         return taskRepository.getTasks()
     }
@@ -41,6 +45,13 @@ class TaskInteractorImpl : TaskInteractor {
 
     override fun getNearestTask(): Task? {
         return taskRepository.getNearestTask()
+    }
+
+    override fun getNearestTask(taskStatus: Array<TaskStatus>): Task? {
+        val intStatus = IntArray(taskStatus.size) {
+            taskStatus[it].ordinal
+        }
+        return taskRepository.getNearestTask(intStatus)
     }
 
     override fun saveTask(task: Task) {

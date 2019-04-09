@@ -17,6 +17,8 @@ interface TaskRepository {
 
     fun getNearestTask(): Task?
 
+    fun getNearestTask(taskStatus: IntArray): Task?
+
     fun saveTask(task: Task)
 
     fun updateTask(task: Task)

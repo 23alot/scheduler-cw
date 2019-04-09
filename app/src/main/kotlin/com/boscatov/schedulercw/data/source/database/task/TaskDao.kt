@@ -28,7 +28,10 @@ interface TaskDao {
     @Query("SELECT * FROM task WHERE task_date_start BETWEEN :from AND :to ORDER BY task_date_start LIMIT 1")
     fun getNearestTask(from: Date, to: Date): Task
 
-    @Query("SELECT * FROM task WHERE (task_status IN (:taskStatusesToShow)) OR (task_date_start BETWEEN :from AND :to) ORDER BY task_date_start DESC LIMIT 1")
+    @Query("SELECT * FROM task WHERE (task_status IN (:taskStatusesToShow)) AND (task_date_start BETWEEN :from AND :to) ORDER BY task_date_start LIMIT 1")
+    fun getNearestTask(taskStatusesToShow: IntArray, from: Date, to: Date): Task
+
+    @Query("SELECT * FROM task WHERE (task_status IN (:taskStatusesToShow)) AND (task_date_start BETWEEN :from AND :to) ORDER BY task_date_start DESC LIMIT 1")
     fun getLatestTask(taskStatusesToShow: IntArray, from: Date, to: Date): Task
 
     @Update

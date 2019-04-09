@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Task
+import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.view.adapter.color_choose.ColorChooseAdapter
 import com.boscatov.schedulercw.view.ui.state.NewTaskAcceptState
 import com.boscatov.schedulercw.view.ui.state.State
@@ -112,7 +113,8 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
                 taskColor = color,
                 taskDuration = duration,
                 taskPriority = priority,
-                taskDeadLine = date.time
+                taskDeadLine = date.time,
+                taskStatus = TaskStatus.ABANDONED
             )
         } else {
             val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(startDate)

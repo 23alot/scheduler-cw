@@ -7,6 +7,7 @@ import java.util.Date
 
 interface TaskInteractor {
     // TODO: Переделать на observable
+    fun getTask(taskId: Long): Task
 
     fun getTasks(): List<Task>
 
@@ -15,6 +16,8 @@ interface TaskInteractor {
     fun getDateTasks(date: Date): List<Task>
 
     fun getNearestTask(): Task?
+
+    fun getNearestTask(taskStatus: Array<TaskStatus>): Task?
 
     fun saveTask(task: Task)
 

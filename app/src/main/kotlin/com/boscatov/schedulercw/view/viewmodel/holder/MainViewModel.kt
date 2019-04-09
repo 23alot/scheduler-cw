@@ -59,5 +59,7 @@ class MainViewModel : ViewModel() {
 
     fun onNewTaskComplete() {
         state.value = DefaultState()
+        val nearestTaskBuilder = OneTimeWorkRequestBuilder<NearestTaskWorker>()
+        WorkManager.getInstance().enqueue(nearestTaskBuilder.build())
     }
 }

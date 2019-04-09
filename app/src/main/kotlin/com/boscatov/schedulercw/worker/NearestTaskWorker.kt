@@ -40,15 +40,18 @@ class NearestTaskWorker(
     }
 
     override fun doWork(): Result {
-        sendNotificationStart(taskInteractor.getNearestTask())
+        sendNotificationStart(taskInteractor.getNearestTask(arrayOf(TaskStatus.PENDING)))
         return Result.success()
     }
 
     private fun sendNotificationStart(task: Task?) {
         createNotificationChannel()
-        if (task?.taskStatus == TaskStatus.ACTIVE) return
+        task?.let {
+            if (it.taskStatus == TaskStatus.ACTIVE) return
+        }
+
         val remoteViews: RemoteViews
-        if (task != null) {
+        if (task != null && task.taskStatus == TaskStatus.PENDING && task.taskDateStart != null) {
             remoteViews = RemoteViews(context.packageName, R.layout.notification_start)
             remoteViews.setTextViewText(R.id.notificationStartTitleTV, task.taskTitle)
             remoteViews.setTextViewText(

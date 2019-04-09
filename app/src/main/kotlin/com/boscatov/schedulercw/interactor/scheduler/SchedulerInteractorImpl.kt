@@ -63,6 +63,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.ABANDONED
+            task.taskDateStart = null
             taskRepository.updateTask(task)
             val nearestTaskWorker = OneTimeWorkRequestBuilder<NearestTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("AbandonTask", ExistingWorkPolicy.REPLACE, nearestTaskWorker)
