@@ -1,9 +1,11 @@
 package com.boscatov.schedulercw.view.viewmodel.task_list
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.di.Scopes
+import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractor
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,6 +22,9 @@ class TaskListViewModel : ViewModel() {
 
     @Inject
     lateinit var taskInteractor: TaskInteractor
+
+    @Inject
+    lateinit var schedulerInteractor: SchedulerInteractor
     init {
         val scope = Toothpick.openScope(Scopes.TASK_SCOPE)
         Toothpick.inject(this, scope)
@@ -29,8 +34,11 @@ class TaskListViewModel : ViewModel() {
     fun loadData() {
         // TODO: Обработать Disposable
         Observable.fromCallable {
+            Log.d("123", "load request")
             taskInteractor.getDateTasks(day.value!!)
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread()).subscribe {
+                Log.d("123", "load complete $it")
             tasks.value = it
         }
     }
@@ -48,6 +56,18 @@ class TaskListViewModel : ViewModel() {
             }
         }
         return id
+    }
+
+    fun onChaosSwipe(position: Int) {
+        val task = tasks.value!![position]
+        schedulerInteractor.abandonTaskCompletable(task.taskId).subscribe()
+        loadData()
+    }
+
+    fun onDoneSwipe(position: Int) {
+        val task = tasks.value!![position]
+        schedulerInteractor.completeTaskCompletable(task.taskId).subscribe()
+        loadData()
     }
 
     fun increaseDate() {

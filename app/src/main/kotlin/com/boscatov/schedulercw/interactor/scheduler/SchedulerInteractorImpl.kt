@@ -10,6 +10,7 @@ import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.worker.ActiveTaskWorker
 import com.boscatov.schedulercw.worker.NearestTaskWorker
 import io.reactivex.Completable
+import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
             // Вызов ActiveTaskWorker
             val activeTaskWorker = OneTimeWorkRequestBuilder<ActiveTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("ActiveTask", ExistingWorkPolicy.REPLACE, activeTaskWorker)
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun completeTaskCompletable(taskId: Long): Completable {
@@ -47,7 +48,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
             taskRepository.updateTask(task)
             val nearestTaskWorker = OneTimeWorkRequestBuilder<NearestTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("CompleteTask", ExistingWorkPolicy.REPLACE, nearestTaskWorker)
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun notifyTaskShouldBeEndedCompletable(taskId: Long): Completable {
@@ -55,7 +56,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.WAIT_FOR_ACTION
             taskRepository.updateTask(task)
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
     override fun abandonTaskCompletable(taskId: Long): Completable {
@@ -67,7 +68,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
             taskRepository.updateTask(task)
             val nearestTaskWorker = OneTimeWorkRequestBuilder<NearestTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("AbandonTask", ExistingWorkPolicy.REPLACE, nearestTaskWorker)
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
 }
