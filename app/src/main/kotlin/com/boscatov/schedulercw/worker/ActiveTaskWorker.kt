@@ -20,6 +20,7 @@ import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractor
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
 import com.boscatov.schedulercw.receiver.NotificationTaskReceiver
+import com.boscatov.schedulercw.util.secondsToFormatted
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.operators.observable.ObservableInterval
 import io.reactivex.schedulers.Schedulers
@@ -88,7 +89,7 @@ class ActiveTaskWorker(
                 }
 
                 remoteViews.setTextViewText(
-                    R.id.notificationProgressTimeTV, "$it"
+                    R.id.notificationProgressTimeTV, secondsToFormatted(it)
                 )
                 updateNotification(remoteViews)
             }

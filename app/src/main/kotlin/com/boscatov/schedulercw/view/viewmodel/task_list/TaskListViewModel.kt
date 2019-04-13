@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.boscatov.schedulercw.data.entity.Task
+import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.di.Scopes
 import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractor
 import com.boscatov.schedulercw.interactor.task.TaskInteractor
@@ -11,8 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
-import java.util.Calendar
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
 
 class TaskListViewModel : ViewModel() {
@@ -25,6 +25,7 @@ class TaskListViewModel : ViewModel() {
 
     @Inject
     lateinit var schedulerInteractor: SchedulerInteractor
+
     init {
         val scope = Toothpick.openScope(Scopes.TASK_SCOPE)
         Toothpick.inject(this, scope)
@@ -37,15 +38,18 @@ class TaskListViewModel : ViewModel() {
             Log.d("123", "load request")
             taskInteractor.getDateTasks(day.value!!)
         }.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe {
-                Log.d("123", "load complete $it")
-            tasks.value = it
-        }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { taskList ->
+                Log.d("123", "load complete $taskList")
+                val result = taskList.filter { it.taskStatus == TaskStatus.ACTIVE || it.taskStatus == TaskStatus.DONE || it.taskStatus == TaskStatus.PENDING }
+                Log.d("123", "load complete2 $result")
+                tasks.value = result
+            }
     }
 
     fun getCurrentTaskId(): Int? {
         val now = Calendar.getInstance().time
-        val id = tasks.value?.lastIndex
+        val id = 0
         tasks.value?.let {
             for ((i, task) in it.withIndex()) {
                 task.taskDateStart?.let { date ->

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
 import com.boscatov.schedulercw.data.repository.task.TaskRepositoryImpl
+import com.boscatov.schedulercw.data.source.database.project.ProjectDatabase
 import com.boscatov.schedulercw.data.source.database.task.TaskDatabase
 import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractor
 import com.boscatov.schedulercw.interactor.scheduler.SchedulerInteractorImpl
@@ -22,6 +23,12 @@ class MainModule(context: Context) : Module() {
             TaskDatabase.TASK_DATABASE_NAME
         ).fallbackToDestructiveMigration().build()
         bind(TaskDatabase::class.java).toInstance(db)
+        val projectDb = Room.databaseBuilder(
+            context,
+            ProjectDatabase::class.java,
+            ProjectDatabase.PROJECT_DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
+        bind(ProjectDatabase::class.java).toInstance(projectDb)
         bind(Context::class.java).toInstance(context)
     }
 }

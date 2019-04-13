@@ -16,7 +16,10 @@ data class Task(
     @ColumnInfo(name = "task_date_start") var taskDateStart: Date? = null,
     @ColumnInfo(name = "task_priority") val taskPriority: Int,
     @ColumnInfo(name = "task_deadline") var taskDeadLine: Date? = null,
-    @ColumnInfo(name = "task_status") var taskStatus: TaskStatus = TaskStatus.PENDING
+    @ColumnInfo(name = "task_status") var taskStatus: TaskStatus = TaskStatus.PENDING,
+    @ColumnInfo(name = "task_spent") var taskSpent: Long? = null,
+    @ColumnInfo(name = "task_parent") var taskParentId: Long? = null,
+    @ColumnInfo(name = "task_project") var taskProjectId: Long? = null
 ) {
     fun castToNNvalues(): Pair<ArrayList<Double>, Double> {
         val values = arrayListOf<Double>()

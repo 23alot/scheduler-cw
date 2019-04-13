@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.LEFT
 import androidx.recyclerview.widget.ItemTouchHelper.RIGHT
@@ -54,12 +55,17 @@ class TaskAdapter(val tasks: MutableList<Task>) : RecyclerView.Adapter<TaskAdapt
         holder.task.taskItemColorLineIV.setBackgroundColor(tasks[position].taskColor)
     }
 
-    override fun getItemCount(): Int = tasks.size
+    override fun getItemCount(): Int {
+        return tasks.size
+    }
 
     fun setTasks(tasks: List<Task>) {
+        Log.d(TaskAdapter::class.java.name, "${tasks.count()} ${tasks.size}")
+        val diffUtil = TaskDiffUtil(this.tasks, tasks)
+        val result = DiffUtil.calculateDiff(diffUtil)
         this.tasks.clear()
         this.tasks.addAll(tasks)
-        notifyDataSetChanged()
+        result.dispatchUpdatesTo(this)
     }
 
     // TODO: ;(

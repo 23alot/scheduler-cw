@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.view.adapter.task.TaskAdapter
@@ -23,7 +25,8 @@ import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import com.boscatov.schedulercw.view.viewmodel.task_list.TaskListViewModel
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
+
 
 class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
     lateinit var mainViewModel: MainViewModel
@@ -45,20 +48,22 @@ class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
         taskListViewModel = ViewModelProviders.of(this).get(TaskListViewModel::class.java)
 
         taskListFragmentRV.apply {
-            layoutManager = LinearLayoutManager(this@TaskListFragment.context)
+            layoutManager = LinearLayoutManager(this@TaskListFragment.requireContext())
             adapter = taskListAdapter
         }
 
         taskListViewModel.tasks.observe(this, Observer<List<Task>> {
-            Log.d("123", "observe $it")
             taskListAdapter.setTasks(it)
             val id = taskListViewModel.getCurrentTaskId()
-            id?.let {
-                if(it >= 0) {
-                    taskListFragmentRV.layoutManager?.scrollToPosition(it)
+            id?.let { taskPosition ->
+                if (taskPosition >= 0) {
+                    Log.d("123", "$taskPosition")
+                    taskListFragmentRV.layoutManager?.scrollToPosition(taskPosition)
                 }
             }
         })
+
+        taskListFragmentRV.itemAnimator = null
         taskListViewModel.day.observe(this, Observer {
             changeTitle(it)
             taskListViewModel.loadData()
@@ -108,11 +113,17 @@ class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
         taskListFragmentTitle.setText(formatter.format(date))
     }
 
-    inner class UpdateReceiver: BroadcastReceiver() {
+    inner class UpdateReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
-                when(it.action) {
-                    "com.boscatov.schedulercw.updatelist" -> taskListViewModel.loadData()
+                when (it.action) {
+                    "com.boscatov.schedulercw.updatelist" -> {
+                        Handler().postDelayed(
+                            {taskListViewModel.loadData()}
+                            , 200L
+                        )
+                    }
+                    else -> return
                 }
             }
         }

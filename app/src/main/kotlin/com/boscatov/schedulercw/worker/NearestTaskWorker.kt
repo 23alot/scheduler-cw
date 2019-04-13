@@ -40,7 +40,7 @@ class NearestTaskWorker(
     }
 
     override fun doWork(): Result {
-        sendNotificationStart(taskInteractor.getNearestTask(arrayOf(TaskStatus.PENDING)))
+        sendNotificationStart(taskInteractor.getNearestTask(arrayOf(TaskStatus.PENDING, TaskStatus.ACTIVE)))
         return Result.success()
     }
 

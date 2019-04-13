@@ -5,9 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.boscatov.schedulercw.data.entity.Project
 import com.boscatov.schedulercw.data.entity.Task
 
-@Database(entities = [Task::class], version = 5)
+@Database(entities = [Task::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class TaskDatabase : RoomDatabase() {
     companion object {
