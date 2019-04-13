@@ -6,22 +6,7 @@
             android:id="@+id/bottomMenuChaosAction"
             android:enabled="true"
             android:icon="@drawable/ic_chaos_24dp"
-            android:title="@string/bottom_menu_chaos_action"
-            app:showAsAction="ifRoom" />
-
-        <item
-            android:id="@+id/bottomMenuHomeAction"
-            android:checked="true"
-            android:enabled="true"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/bottom_menu_home_action"
-            app:showAsAction="ifRoom" />
-
-        <item
-            android:id="@+id/bottomMenuStatsAction"
-            android:enabled="true"
-            android:icon="@drawable/ic_show_chart_black_24dp"
-            android:title="@string/bottom_menu_stats_action"
+            android:title="@string/navigation_drawer_project_action"
             app:showAsAction="ifRoom" />
     </group>
 </menu>

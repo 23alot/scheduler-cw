@@ -4,4 +4,5 @@
     <string name="bottom_menu_chaos_action">Chaos</string>
     <string name="bottom_menu_home_action">Home</string>
     <string name="bottom_menu_stats_action">Stats</string>
+    <string name="navigation_drawer_project_action">Projects</string>
 </resources>
