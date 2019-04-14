@@ -30,30 +30,8 @@ class NeuralNetworkRepositoryImpl @Inject constructor(): NeuralNetworkRepository
             val priority = it.taskPriority.toDouble()
             x.add(mutableListOf(duration, priority, dayOfMonth, dayOfWeek))
             Y.add(60 * hour + minute)
-
-//            X.addRow(
-//                mutableListOf(
-//                    duration,
-//                    priority,
-//                    dayOfMonth,
-//                    dayOfWeek
-//                )
-//            )
-//
-//            y.addRow(
-//                mutableListOf(
-//                    60 * hour + minute
-//                )
-//            )
-
-
         }
         superML(x, Y)
-
-//        normalize()
-//
-//        val XT = X.T
-//        w = (XT * X).inverse() * XT * y
     }
 
     override fun predict(task: Task): Date {

@@ -2,6 +2,8 @@ package com.boscatov.schedulercw.di
 
 import android.content.Context
 import androidx.room.Room
+import com.boscatov.schedulercw.data.repository.preferences.NNSharedPreferences
+import com.boscatov.schedulercw.data.repository.preferences.NNSharedPreferencesImpl
 import com.boscatov.schedulercw.data.repository.project.ProjectRepository
 import com.boscatov.schedulercw.data.repository.project.ProjectRepositoryImpl
 import com.boscatov.schedulercw.data.repository.task.TaskRepository
@@ -36,5 +38,6 @@ class MainModule(context: Context) : Module() {
         ).fallbackToDestructiveMigration().build()
         bind(ProjectDatabase::class.java).toInstance(projectDb)
         bind(Context::class.java).toInstance(context)
+        bind(NNSharedPreferences::class.java).to(NNSharedPreferencesImpl::class.java).singletonInScope()
     }
 }
