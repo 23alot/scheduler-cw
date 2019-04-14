@@ -2,7 +2,6 @@ package com.boscatov.schedulercw.data.source.database.project
 
 import androidx.room.*
 import com.boscatov.schedulercw.data.entity.Project
-import com.boscatov.schedulercw.data.entity.Task
 
 /**
  * Created by boscatov on 13.04.2019.

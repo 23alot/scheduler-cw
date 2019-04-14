@@ -26,7 +26,5 @@
                 <action android:name="com.boscatov.schedulercw.action.NOTIFICATION_TASK" />
             </intent-filter>
         </receiver>
-
-        <service android:name=".worker.NotificationService" />
     </application>
 </manifest>

@@ -54,11 +54,14 @@ class ProjectViewModel : ViewModel() {
             }
     }
 
-    fun onAcceptNewTask(task: Task) {
-        Observable.fromCallable {
-            taskInteractor.saveTask(task)
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-        }
-
+    fun onDeleteProject(position: Int) {
+        Completable.create {
+            projectInteractor.deleteProject(projects.value!![position])
+            it.onComplete()
+        }.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                onLoadProjects()
+            }
     }
 }

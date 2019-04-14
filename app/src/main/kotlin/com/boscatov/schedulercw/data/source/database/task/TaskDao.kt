@@ -2,7 +2,7 @@ package com.boscatov.schedulercw.data.source.database.task
 
 import androidx.room.*
 import com.boscatov.schedulercw.data.entity.Task
-import java.util.Date
+import java.util.*
 
 @Dao
 interface TaskDao {

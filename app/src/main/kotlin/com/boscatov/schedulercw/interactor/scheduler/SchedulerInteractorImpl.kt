@@ -29,7 +29,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
     }
 
     override fun startTaskCompletable(taskId: Long): Completable {
-        Log.d(TAG, "start task $taskId")
+        Log.d(TAG, "start project $taskId")
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.ACTIVE
@@ -41,7 +41,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
     }
 
     override fun completeTaskCompletable(taskId: Long): Completable {
-        Log.d(TAG, "complete task $taskId")
+        Log.d(TAG, "complete project $taskId")
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.DONE
@@ -60,7 +60,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
     }
 
     override fun abandonTaskCompletable(taskId: Long): Completable {
-        Log.d(TAG, "abandon task $taskId")
+        Log.d(TAG, "abandon project $taskId")
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.ABANDONED
