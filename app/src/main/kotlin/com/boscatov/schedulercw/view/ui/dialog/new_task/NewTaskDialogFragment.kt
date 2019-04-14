@@ -3,7 +3,12 @@ package com.boscatov.schedulercw.view.ui.dialog.new_task
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,10 +23,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.entity.TaskStatus
 import com.boscatov.schedulercw.view.adapter.color_choose.ColorChooseAdapter
+import com.boscatov.schedulercw.view.ui.dialog.add_parent.AddParentTaskDialogFragment
+import com.boscatov.schedulercw.view.ui.dialog.add_project.AddProjectDialogFragment
 import com.boscatov.schedulercw.view.ui.state.NewTaskAcceptState
 import com.boscatov.schedulercw.view.ui.state.State
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
@@ -35,6 +43,9 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
 
     lateinit var mainViewModel: MainViewModel
     lateinit var newTaskViewModel: NewTaskViewModel
+    private val receiver = AddReceiver()
+    private var taskParentId: Long = -1
+    private var projectId: Long = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_new_task, null)
@@ -69,6 +80,16 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
                 dialogNewTaskDateGroup.visibility = View.VISIBLE
             }
         }
+
+        dialogNewTaskParentTaskTV.setOnClickListener {
+            val dialog = AddParentTaskDialogFragment.getInstance()
+            dialog.show(fragmentManager, "AddParentTaskDialogFragment")
+        }
+
+        dialogNewTaskProjectTV.setOnClickListener {
+            val dialog = AddProjectDialogFragment.getInstance()
+            dialog.show(fragmentManager, "AddProjectDialogFragment")
+        }
     }
 
     private fun changeState(state: State) {
@@ -94,6 +115,8 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val color = dialogNewTaskColorChooseSpinner.selectedItem as Int
         val deadlineDate = dialogNewTaskDeadlineDateTV.text.toString()
         val deadlineTime = dialogNewTaskDeadlineTimeTV.text.toString()
+        val parentTask = if (taskParentId == -1L) null else taskParentId
+        val project = if (projectId == -1L) null else projectId
 
 
         if (dialogNewTaskAllowAutoTimeCB.isChecked) {
@@ -114,7 +137,9 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
                 taskDuration = duration,
                 taskPriority = priority,
                 taskDeadLine = date.time,
-                taskStatus = TaskStatus.ABANDONED
+                taskStatus = TaskStatus.ABANDONED,
+                taskParentId = parentTask,
+                taskProjectId = project
             )
         } else {
             val dateFormat = SimpleDateFormat("dd MMMM, yyyy").parse(startDate)
@@ -133,7 +158,9 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
                 taskColor = color,
                 taskDateStart = date.time,
                 taskDuration = duration,
-                taskPriority = priority
+                taskPriority = priority,
+                taskParentId = parentTask,
+                taskProjectId = project
             )
         }
     }
@@ -200,6 +227,41 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
             dialogNewTaskStartTimeTextView.setText(format.format(date.time))
         } else {
             dialogNewTaskDeadlineTimeTV.setText(format.format(date.time))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter()
+        filter.addAction("com.boscatov.schedulercw.add_project")
+        filter.addAction("com.boscatov.schedulercw.add_parent_task")
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(receiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+    }
+
+    inner class AddReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                when (it.action) {
+                    "com.boscatov.schedulercw.add_project" -> {
+                        val id = it.getLongExtra("PROJECT_ID", 0)
+                        val name = it.getStringExtra("PROJECT_NAME")
+                        projectId = id
+                        dialogNewTaskProjectTV.setText(name)
+                    }
+                    "com.boscatov.schedulercw.add_parent_task" -> {
+                        val id = it.getLongExtra("TASK_ID", 0)
+                        val title = it.getStringExtra("TASK_TITLE")
+                        taskParentId = id
+                        dialogNewTaskParentTaskTV.setText(title)
+                    }
+                    else -> return
+                }
+            }
         }
     }
 }

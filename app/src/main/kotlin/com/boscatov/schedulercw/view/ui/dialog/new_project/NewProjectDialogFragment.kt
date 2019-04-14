@@ -3,9 +3,6 @@ package com.boscatov.schedulercw.view.ui.dialog.new_project
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -13,8 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.data.entity.Project
-import com.boscatov.schedulercw.view.viewmodel.ProjectViewModel
-import kotlinx.android.synthetic.main.dialog_new_project.*
+import com.boscatov.schedulercw.view.viewmodel.project.ProjectViewModel
 
 /**
  * Created by boscatov on 14.04.2019.

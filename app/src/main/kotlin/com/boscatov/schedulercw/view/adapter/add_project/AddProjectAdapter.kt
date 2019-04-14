@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.add_project_item.view.*
 class AddProjectAdapter(val projects: MutableList<Project>) :
     RecyclerView.Adapter<AddProjectAdapter.AddProjectViewHolder>() {
     interface Callback {
-        fun onProjectSelect(position: Int)
+        fun onProjectSelect(project: Project)
     }
 
     private var listener: Callback? = null
@@ -34,7 +34,7 @@ class AddProjectAdapter(val projects: MutableList<Project>) :
     override fun onBindViewHolder(holder: AddProjectViewHolder, position: Int) {
         holder.project.addProjectItemTV.setText(projects[position].projectName)
         holder.project.setOnClickListener {
-            listener?.onProjectSelect(position)
+            listener?.onProjectSelect(projects[position])
         }
     }
 
@@ -42,7 +42,7 @@ class AddProjectAdapter(val projects: MutableList<Project>) :
         return projects.size
     }
 
-    fun setTasks(projects: List<Project>) {
+    fun setProjects(projects: List<Project>) {
         val diffUtil = AddProjectDiffUtil(this.projects, projects)
         val result = DiffUtil.calculateDiff(diffUtil)
         this.projects.clear()

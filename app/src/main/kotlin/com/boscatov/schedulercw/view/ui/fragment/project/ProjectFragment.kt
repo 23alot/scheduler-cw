@@ -16,11 +16,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boscatov.schedulercw.R
-import com.boscatov.schedulercw.data.entity.Project
 import com.boscatov.schedulercw.view.adapter.project.ProjectAdapter
-import com.boscatov.schedulercw.view.ui.dialog.add_project.AddProjectDialogFragment
 import com.boscatov.schedulercw.view.ui.dialog.new_project.NewProjectDialogFragment
-import com.boscatov.schedulercw.view.viewmodel.ProjectViewModel
+import com.boscatov.schedulercw.view.viewmodel.project.ProjectViewModel
 import kotlinx.android.synthetic.main.fragment_project.*
 
 

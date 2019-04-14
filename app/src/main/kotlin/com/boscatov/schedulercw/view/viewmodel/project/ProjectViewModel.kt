@@ -1,4 +1,4 @@
-package com.boscatov.schedulercw.view.viewmodel
+package com.boscatov.schedulercw.view.viewmodel.project
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

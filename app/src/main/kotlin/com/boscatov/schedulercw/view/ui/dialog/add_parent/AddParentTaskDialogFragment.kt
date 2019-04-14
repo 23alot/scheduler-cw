@@ -1,4 +1,4 @@
-package com.boscatov.schedulercw.view.ui.dialog.add_project
+package com.boscatov.schedulercw.view.ui.dialog.add_parent
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,28 +13,28 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boscatov.schedulercw.R
-import com.boscatov.schedulercw.data.entity.Project
-import com.boscatov.schedulercw.view.adapter.add_project.AddProjectAdapter
-import com.boscatov.schedulercw.view.viewmodel.add_project.AddProjectViewModel
+import com.boscatov.schedulercw.data.entity.Task
+import com.boscatov.schedulercw.view.adapter.add_parent_task.AddParentTaskAdapter
+import com.boscatov.schedulercw.view.viewmodel.add_parent_task.AddParentTaskViewModel
 import kotlinx.android.synthetic.main.dialog_add_project.*
 
 /**
  * Created by boscatov on 14.04.2019.
  */
 
-class AddProjectDialogFragment : DialogFragment(), AddProjectAdapter.Callback {
+class AddParentTaskDialogFragment : DialogFragment(), AddParentTaskAdapter.Callback {
     companion object {
         fun getInstance(): DialogFragment {
-            return AddProjectDialogFragment()
+            return AddParentTaskDialogFragment()
         }
     }
 
-    private lateinit var projectViewModel: AddProjectViewModel
-    private val adapter = AddProjectAdapter(mutableListOf())
+    private lateinit var taskViewModel: AddParentTaskViewModel
+    private val adapter = AddParentTaskAdapter(mutableListOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        projectViewModel = ViewModelProviders.of(this).get(AddProjectViewModel::class.java)
+        taskViewModel = ViewModelProviders.of(this).get(AddParentTaskViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,16 +43,17 @@ class AddProjectDialogFragment : DialogFragment(), AddProjectAdapter.Callback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        projectViewModel.showProjects.observe(this, Observer {
-            adapter.setProjects(it)
+        taskViewModel.showTasks.observe(this, Observer {
+            adapter.setTasks(it)
         })
+
         dialogAddProjectRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@AddProjectDialogFragment.adapter
+            adapter = this@AddParentTaskDialogFragment.adapter
         }
         dialogAddProjectET.addTextChangedListener(object: TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                projectViewModel.onTextChanged(s.toString())
+                taskViewModel.onTextChanged(s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -63,14 +64,14 @@ class AddProjectDialogFragment : DialogFragment(), AddProjectAdapter.Callback {
 
             }
         })
-        adapter.setOnProjectSelectListener(this)
-        projectViewModel.onLoadProjects()
+        dialogAddProjectET.hint = "Task title"
+        taskViewModel.onLoadTasks()
     }
 
-    override fun onProjectSelect(project: Project) {
-        val intent = Intent("com.boscatov.schedulercw.add_project")
-        intent.putExtra("PROJECT_ID", project.projectId)
-        intent.putExtra("PROJECT_NAME", project.projectName)
+    override fun onTaskSelect(task: Task) {
+        val intent = Intent("com.boscatov.schedulercw.add_parent_task")
+        intent.putExtra("TASK_ID", task.taskId)
+        intent.putExtra("TASK_TITLE", task.taskTitle)
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
         dismiss()
     }
