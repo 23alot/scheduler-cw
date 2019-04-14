@@ -41,6 +41,16 @@ class HolderActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIte
         initWorkers()
         changeToDefault()
         mainViewModel.testNetwork()
+
+        nav_view.setNavigationItemSelectedListener {
+            it.isChecked = true
+            when(it.itemId) {
+                R.id.navigationDrawerProjectAction -> navController.navigate(R.id.projectFragment)
+            }
+            activityHolderDrawerLayout.closeDrawers()
+
+            return@setNavigationItemSelectedListener true
+        }
     }
 
     // TODO: Перенести в Preferences

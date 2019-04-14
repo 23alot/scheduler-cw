@@ -25,4 +25,6 @@
         android:id="@+id/newTaskDialogFragment"
         android:name="com.boscatov.schedulercw.view.ui.dialog.new_task.NewTaskDialogFragment"
         android:label="NewTaskDialogFragment" />
+    <fragment android:id="@+id/projectFragment" android:name="com.boscatov.schedulercw.view.ui.fragment.project.ProjectFragment"
+              android:label="ProjectFragment" tools:layout="@layout/fragment_project"/>
 </navigation>

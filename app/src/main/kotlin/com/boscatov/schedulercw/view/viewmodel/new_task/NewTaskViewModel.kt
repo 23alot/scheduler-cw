@@ -1,6 +1,5 @@
 package com.boscatov.schedulercw.view.viewmodel.new_task
 
-import android.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.di.Scopes
@@ -14,6 +13,7 @@ import javax.inject.Inject
 class NewTaskViewModel : ViewModel() {
     @Inject
     lateinit var taskInteractor: TaskInteractor
+
     init {
         val scope = Toothpick.openScope(Scopes.TASK_SCOPE)
         Toothpick.inject(this, scope)
