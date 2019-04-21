@@ -23,7 +23,16 @@ import kotlinx.android.synthetic.main.task_item.view.*
 import java.text.SimpleDateFormat
 
 class TaskAdapter(val tasks: MutableList<Task>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+    interface OnTaskClickListener {
+        fun onTaskClicked(taskId: Long)
+    }
     class TaskViewHolder(val task: CardView) : RecyclerView.ViewHolder(task)
+
+    private var clickListener: OnTaskClickListener? = null
+
+    fun setOnClickListener(listener: OnTaskClickListener) {
+        clickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val task = LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false) as CardView
@@ -47,6 +56,10 @@ class TaskAdapter(val tasks: MutableList<Task>) : RecyclerView.Adapter<TaskAdapt
             holder.task.taskItemDeadlineTV.setText(dateFormatter.format(it))
         } ?: run {
             holder.task.taskItemDeadlineTV.visibility = View.GONE
+        }
+
+        holder.task.setOnClickListener {
+            clickListener?.onTaskClicked(tasks[position].taskId)
         }
 
         holder.task.taskItemEndTimeTV.setText("${tasks[position].taskDuration}")

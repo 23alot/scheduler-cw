@@ -6,5 +6,5 @@ package com.boscatov.schedulercw.data.repository.preferences
 
 interface NNSharedPreferences {
     fun getValues(): List<Double>
-    fun setValues(valuers: List<Double>)
+    fun setValues(values: List<Double>)
 }

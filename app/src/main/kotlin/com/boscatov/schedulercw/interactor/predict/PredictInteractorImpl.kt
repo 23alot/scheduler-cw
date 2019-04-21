@@ -2,6 +2,7 @@ package com.boscatov.schedulercw.interactor.predict
 
 import com.boscatov.schedulercw.data.entity.*
 import com.boscatov.schedulercw.data.repository.neuralnetwork.NeuralNetworkRepository
+import com.boscatov.schedulercw.data.repository.preferences.NNSharedPreferences
 import com.boscatov.schedulercw.data.repository.scheduler_algorithm.ReservedData
 import com.boscatov.schedulercw.data.repository.scheduler_algorithm.SchedulerAlgorithmRepository
 import com.boscatov.schedulercw.data.repository.scheduler_algorithm.SchedulerData
@@ -19,8 +20,10 @@ import javax.inject.Inject
 class PredictInteractorImpl @Inject constructor(
     private val taskRepository: TaskRepository,
     private val neuralNetworkRepository: NeuralNetworkRepository,
-    private val schedulerAlgorithmRepository: SchedulerAlgorithmRepository
+    private val schedulerAlgorithmRepository: SchedulerAlgorithmRepository,
+    private val nnSharedPreferences: NNSharedPreferences
 ) : PredictInteractor {
+    private val values = nnSharedPreferences.getValues()
 
     // TODO: Подобрать значения progress
     override fun predict(tasks: List<Task>): Observable<PredictEvent> {
@@ -36,12 +39,9 @@ class PredictInteractorImpl @Inject constructor(
     }
 
     private fun neuralPredict(tasks: List<Task>, allTasks: List<Task>): List<Pair<Task, List<Long>>> {
-//        neuralNetworkRepository.fit(allTasks)
-        val now = Calendar.getInstance().time
         val predictDates = mutableListOf<Pair<Task, List<Long>>>()
         tasks.forEach {
-            val calendar = Calendar.getInstance()
-            val knn = KNN(allTasks, listOf(20.0, 15.0), 3)
+            val knn = KNN(allTasks, values, 3)
             val taskPredict = knn.predict(it)
             predictDates.add(Pair(it, taskPredict))
         }

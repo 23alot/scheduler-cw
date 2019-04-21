@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.boscatov.schedulercw.R
 import com.boscatov.schedulercw.view.adapter.task.TaskAdapter
@@ -19,7 +20,7 @@ import com.boscatov.schedulercw.view.viewmodel.chaos.ChaosViewModel
 import com.boscatov.schedulercw.view.viewmodel.holder.MainViewModel
 import kotlinx.android.synthetic.main.fragment_chaos.*
 
-class ChaosFragment : Fragment() {
+class ChaosFragment : Fragment(), TaskAdapter.OnTaskClickListener {
 
     lateinit var mainViewModel: MainViewModel
     lateinit var chaosViewModel: ChaosViewModel
@@ -52,7 +53,15 @@ class ChaosFragment : Fragment() {
         })
 
         chaosViewModel.onLoadTasks()
+        chaosListAdapter.setOnClickListener(this)
         fragmentChaosSortTasksFAB.setOnClickListener { chaosViewModel.onPredictTasks() }
+    }
+
+    override fun onTaskClicked(taskId: Long) {
+        mainViewModel.onOpenNewTaskDialog()
+        val bundle = Bundle()
+        bundle.putLong("TASK_ID", taskId)
+        findNavController().navigate(R.id.action_calendarFragment_to_editTaskDialogFragment, bundle)
     }
 
     override fun onResume() {

@@ -58,6 +58,10 @@ class TaskInteractorImpl : TaskInteractor {
         taskRepository.saveTask(task)
     }
 
+    override fun updateTask(task: Task) {
+        taskRepository.updateTask(task)
+    }
+
     override fun getLatestTask(taskStatus: Array<TaskStatus>): Task? {
         val intStatus = IntArray(taskStatus.size) {
             taskStatus[it].ordinal

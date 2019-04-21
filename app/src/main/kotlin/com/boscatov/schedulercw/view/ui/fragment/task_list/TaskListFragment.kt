@@ -14,7 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -28,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
+class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback, TaskAdapter.OnTaskClickListener {
     lateinit var mainViewModel: MainViewModel
     lateinit var taskListViewModel: TaskListViewModel
     private val taskListAdapter: TaskAdapter = TaskAdapter(arrayListOf())
@@ -57,8 +59,9 @@ class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
             val id = taskListViewModel.getCurrentTaskId()
             id?.let { taskPosition ->
                 if (taskPosition >= 0) {
-                    Log.d("123", "$taskPosition")
-                    taskListFragmentRV.layoutManager?.scrollToPosition(taskPosition)
+                    Handler().postDelayed({
+                        taskListFragmentRV?.layoutManager?.scrollToPosition(taskPosition)
+                    }, 200L)
                 }
             }
         })
@@ -84,6 +87,7 @@ class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
         })
         val itemTouch = TaskAdapter.ItemTouch(requireContext())
         itemTouch.setListener(this)
+        taskListAdapter.setOnClickListener(this)
         itemTouchHelper = ItemTouchHelper(itemTouch)
         itemTouchHelper.attachToRecyclerView(taskListFragmentRV)
         taskListViewModel.loadData()
@@ -95,6 +99,13 @@ class TaskListFragment : Fragment(), TaskAdapter.ItemTouch.SwipeCallback {
 
     override fun onDoneSwipe(position: Int) {
         taskListViewModel.onDoneSwipe(position)
+    }
+
+    override fun onTaskClicked(taskId: Long) {
+        mainViewModel.onOpenNewTaskDialog()
+        val bundle = Bundle()
+        bundle.putLong("TASK_ID", taskId)
+        findNavController().navigate(R.id.action_taskListFragment_to_editTaskDialogFragment, bundle)
     }
 
     override fun onResume() {

@@ -54,10 +54,13 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
                 if (reserve.startTime > desiredTime && i > 0) {
                     val previous = reserved[i - 1]
                     val next = reserved[i]
-                    if (desiredTime >= previous.endTime && desiredTime + task.duration <= next.startTime) {
-                        reserved.add(i, ReservedData(desiredTime, desiredTime + task.duration, task))
+                    val prevEnd = normalizeDate(previous.endTime)
+                    val nextStart = normalizeDate(next.startTime)
+                    if (desiredTime >= prevEnd && desiredTime + task.duration <= nextStart) {
+                        val dif = desiredTime - prevEnd
+                        reserved.add(i, ReservedData(previous.endTime + dif, previous.endTime + dif + task.duration, task))
                         if (predictTime(pos + 1, tasks, reserved, currentBest)) {
-                            task.resultTime = desiredTime
+                            task.resultTime = previous.endTime + dif
                             return true
                         } else {
                             reserved.removeAt(i)
@@ -92,24 +95,27 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
             if (i + 1 == currentBest.count()) {
                 continue
             }
-            if (currentBest[i + 1].startTime - currentBest[i].endTime >= window) {
-                if (time < currentBest[i + 1].startTime) {
-                    if (time > currentBest[i].endTime) {
+            val curEnd = normalizeDate(currentBest[i].endTime)
+            val nextStart = normalizeDate(currentBest[i+1].startTime)
+            if (nextStart - curEnd >= window && currentBest[i + 1].startTime < task.deadline) {
+                if (time < nextStart) {
+                    if (time > curEnd) {
                         val currentDif = Math.abs(best.startTime - time)
                         val newDif = Math.abs(time)
+                        val dif = time - curEnd
                         if (currentDif > newDif) {
-                            best = ReservedData(time, time + task.duration, task)
+                            best = ReservedData(currentBest[i].endTime + dif, currentBest[i].endTime + dif + task.duration, task)
                         }
                     } else {
                         val currentDif = Math.abs(best.startTime - time)
-                        val newDif = Math.abs(currentBest[i].endTime - time)
+                        val newDif = Math.abs(curEnd - time)
                         if (currentDif > newDif) {
                             best = ReservedData(currentBest[i].endTime, currentBest[i].endTime + task.duration, task)
                         }
                     }
                 } else {
                     val currentDif = Math.abs(best.startTime - time)
-                    val newDif = Math.abs((currentBest[i + 1].startTime - task.duration) - time)
+                    val newDif = Math.abs((nextStart - task.duration) - time)
                     if (currentDif > newDif) {
                         best = ReservedData(
                             currentBest[i + 1].startTime - task.duration,
@@ -129,6 +135,15 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
         } else {
             false
         }
+    }
+
+    private fun normalizeDate(date: Long): Long {
+        val d = Date(date)
+        val cal = Calendar.getInstance()
+        cal.time = d
+        cal.set(Calendar.YEAR, 1970)
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        return cal.time.time
     }
 }
 

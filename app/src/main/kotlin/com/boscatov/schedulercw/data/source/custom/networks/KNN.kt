@@ -1,6 +1,10 @@
 package com.boscatov.schedulercw.data.source.custom.networks
 
 import com.boscatov.schedulercw.data.entity.Task
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.Comparator
 
 class KNN(
     tasks: List<Task>,
@@ -13,8 +17,17 @@ class KNN(
             if (task.taskDateStart == null) continue
             val v1 = task.taskDuration
             val v2 = task.taskPriority
-            dataset.add(Data(v1, v2, task.taskDateStart!!.time))
+            dataset.add(Data(v1, v2, normalizeDate(task.taskDateStart!!.time)))
         }
+    }
+
+    private fun normalizeDate(date: Long): Long {
+        val d = Date(date)
+        val cal = Calendar.getInstance()
+        cal.time = d
+        cal.set(Calendar.YEAR, 1970)
+        cal.set(Calendar.MONTH, Calendar.JANUARY)
+        return cal.time.time
     }
 
     fun predict(task: Task): List<Long> {
@@ -28,13 +41,16 @@ class KNN(
 
         val map = mutableMapOf<Long, Int>()
         for (i in 0 until k) {
+            if (i >= distances.count()) break
             if (map[distances[i].second] != null) {
                 map[distances[i].second]?.inc()
             } else {
                 map[distances[i].second] = 1
             }
         }
-        val result = map.toList().sortedBy { (_, value) -> value }.map { it.first }
+        val dateStart = Calendar.getInstance()
+        dateStart.set(1970, Calendar.JANUARY, 0, 0, 0, 0)
+        val result = map.toList().sortedBy { (_, value) -> value }.map { it.first + dateStart.time.time }
 
         return result
     }

@@ -12,19 +12,33 @@
         <action
             android:id="@+id/action_taskListFragment_to_newTaskDialogFragment"
             app:destination="@id/newTaskDialogFragment" />
+        <action android:id="@+id/action_taskListFragment_to_editTaskDialogFragment"
+                app:destination="@id/editTaskDialogFragment"/>
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.boscatov.schedulercw.view.ui.fragment.chaos.ChaosFragment"
-        android:label="CalendarFragment" />
+        android:label="CalendarFragment" >
+        <action android:id="@+id/action_calendarFragment_to_editTaskDialogFragment"
+                app:destination="@id/editTaskDialogFragment"/>
+    </fragment>
+
     <fragment
         android:id="@+id/statsFragment"
         android:name="com.boscatov.schedulercw.view.ui.fragment.stats.StatsFragment"
         android:label="StatsFragment" />
+
     <fragment
         android:id="@+id/newTaskDialogFragment"
         android:name="com.boscatov.schedulercw.view.ui.dialog.new_task.NewTaskDialogFragment"
         android:label="NewTaskDialogFragment" />
+
     <fragment android:id="@+id/projectFragment" android:name="com.boscatov.schedulercw.view.ui.fragment.project.ProjectFragment"
               android:label="ProjectFragment" tools:layout="@layout/fragment_project"/>
+
+    <fragment android:id="@+id/editTaskDialogFragment"
+              android:name="com.boscatov.schedulercw.view.ui.dialog.edit_task.EditTaskDialogFragment"
+              android:label="EditTaskDialogFragment">
+        <argument android:name="taskId" app:argType="long" android:defaultValue="0L"/>
+    </fragment>
 </navigation>

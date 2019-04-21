@@ -21,5 +21,7 @@ interface TaskInteractor {
 
     fun saveTask(task: Task)
 
+    fun updateTask(task: Task)
+
     fun getLatestTask(taskStatus: Array<TaskStatus>): Task?
 }

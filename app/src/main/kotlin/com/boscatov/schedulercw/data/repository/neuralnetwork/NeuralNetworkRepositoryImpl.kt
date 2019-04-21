@@ -91,35 +91,24 @@ class NeuralNetworkRepositoryImpl @Inject constructor(): NeuralNetworkRepository
     private fun superML(X: List<List<Double>>, y: List<Double>) {
         val we = mutableListOf<Double>()
         for (i in 0..4) we.add(0.0)
-        val e = 1
+        var e = 1.5
         val alpha = 0.5
-        while (e > 0) {
+        while (e > 5.0) {
             val weights = mutableListOf<Double>()
             weights.addAll(we)
             we[0] -= alpha * calculate(X, y, weights, 0)
             we[1] -= alpha * calculate(X, y, weights, 1)
-            we[2] -= alpha * calculate(X, y, weights, 2)
-            we[3] -= alpha * calculate(X, y, weights, 3)
-            we[4] -= alpha * calculate(X, y, weights, -1)
-            val mi = we.min()?:0.0
-            for (w in we.withIndex()) {
-                we[w.index] -= mi
-            }
-            val ma = we.max()?:1.0
-            for (w in we.withIndex()) {
-                we[w.index] /= ma
-                we[w.index] *= 1000.0
-            }
+            e = Math.sqrt(Math.pow(we[0] - weights[0], 2.0) + Math.pow(we[1] - weights[1], 2.0))
         }
     }
 
     private fun calculate(X: List<List<Double>>, y: List<Double>, w: List<Double>, pos: Int): Double {
         var sum = 0.0
         for ((i, xrow) in X.withIndex()) {
-            sum += w[0]*xrow[0] + w[1]*xrow[1] + w[2]*xrow[2] + w[3]*xrow[3] + w[4] - y[i]
-            if (pos != -1) sum *= xrow[pos]
+            sum += 2 * w[pos] * xrow[pos] * xrow[pos] + 2 * w[Math.abs(pos - 1)] * xrow[0] * xrow [1] * 2 * xrow[pos] * y[i]
         }
         sum /= X.count()
+        sum += 2 * 0.5 * w[pos]
         return sum
     }
 }
