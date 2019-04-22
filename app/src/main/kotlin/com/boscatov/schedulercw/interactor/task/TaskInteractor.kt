@@ -13,6 +13,8 @@ interface TaskInteractor {
 
     fun getTasks(taskStatus: Array<TaskStatus>): Observable<List<Task>>
 
+    fun getTasks(date: Date): List<Task>
+
     fun getDateTasks(date: Date): List<Task>
 
     fun getNearestTask(): Task?

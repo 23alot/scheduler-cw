@@ -19,6 +19,10 @@ import com.androidplot.Series
 import com.androidplot.ui.Formatter
 import com.androidplot.ui.SeriesRenderer
 import com.androidplot.xy.*
+import com.boscatov.schedulercw.data.entity.Task
+import com.boscatov.schedulercw.data.entity.TaskStatus
+import java.util.*
+import java.util.Collections.max
 
 
 class StatsFragment : Fragment() {
@@ -42,14 +46,53 @@ class StatsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val labels = listOf<Number>(1, 2, 3, 6, 7, 8, 9, 10, 13, 14)
-        val series1 = listOf<Number>(1, 4, 2, 8, 4, 16, 8, 32, 16, 64)
-        val series2 = listOf<Number>(5, 2, 10, 5, 20, 10, 40, 20, 80, 40)
+        statsViewModel.tasks.observe(this, androidx.lifecycle.Observer {
+            showGraph(it)
+            fragmentStatsTimeSpentTV.setText(timeSpent(it))
+            fragmentStatsTasksDonePB.progress = tasksDone(it)
+        })
+        statsViewModel.loadTasks()
+    }
+
+    private fun timeSpent(tasks: List<Task>): String {
+        val result = tasks.sumBy { (it.taskDuration - (it.taskSpent?:0)).toInt() }
+
+        return if (result > 0) {
+            "You've spent $result less than planned"
+        } else if (result == 0){
+            "You've spent on task as planned"
+        } else {
+            "You've spent ${-result} more than planned"
+        }
+    }
+
+    private fun tasksDone(tasks: List<Task>): Int {
+        val average = tasks.filter { it.taskStatus == TaskStatus.DONE }.count().toDouble() / tasks.count()
+        return (100 * average).toInt()
+    }
+
+    private fun showGraph(tasks: List<Task>) {
+        val taskForDates = tasks.groupBy {
+            val cal = Calendar.getInstance()
+            cal.time = it.taskDateStart
+            cal.get(Calendar.DAY_OF_MONTH)
+        }
+        val labels = taskForDates.keys.toList()
+        val done = mutableListOf<Number>()
+        val abandon = mutableListOf<Number>()
+        for (key in labels) {
+            val t = taskForDates[key]
+            t?.let {
+                done.add(t.filter { it.taskStatus == TaskStatus.DONE }.count())
+                abandon.add(t.filter { it.taskStatus == TaskStatus.ABANDONED }.count())
+            }
+
+        }
         val ser1 = SimpleXYSeries(
-            series1, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1"
+            done, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Done"
         )
         val ser2 = SimpleXYSeries(
-            series2, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2"
+            abandon, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Abandon"
         )
 
         val series1Format = MyFormatter(Color.RED, Color.BLUE)
@@ -58,8 +101,13 @@ class StatsFragment : Fragment() {
 
         fragmentStatsPlot.addSeries(ser1, series1Format)
         fragmentStatsPlot.addSeries(ser2, series2Format)
-        fragmentStatsPlot.rangeStepModel = StepModel(StepMode.INCREMENT_BY_VAL, 5.0)
+        fragmentStatsPlot.rangeStepModel = StepModel(StepMode.INCREMENT_BY_VAL, 1.0)
+        fragmentStatsPlot.linesPerDomainLabel = labels.count()
+        fragmentStatsPlot.linesPerRangeLabel = labels.count()
+        fragmentStatsPlot.domainStepModel = StepModel(StepMode.INCREMENT_BY_VAL, 1.0)
         fragmentStatsPlot.setRangeLowerBoundary(0, BoundaryMode.FIXED)
+        val maxHeight = Math.max((done as MutableList<Int>).max()!!, (abandon as MutableList<Int>).max()!!)
+        fragmentStatsPlot.setRangeUpperBoundary(maxHeight + 0.5, BoundaryMode.FIXED)
 
         fragmentStatsPlot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {
             override fun format(obj: Any, toAppendTo: StringBuffer, pos: FieldPosition): StringBuffer {
@@ -75,7 +123,9 @@ class StatsFragment : Fragment() {
         val renderer = fragmentStatsPlot.getRenderer(
             MyRenderer::class.java)
 
-        renderer.barOrientation = BarRenderer.BarOrientation.STACKED
+//        renderer.setBarGroupWidth(BarRenderer.BarGroupWidthMode.FIXED_WIDTH, 10f)
+        renderer.barOrientation = BarRenderer.BarOrientation.SIDE_BY_SIDE
+        fragmentStatsPlot.invalidate()
     }
 
     private class MyRenderer(plot: XYPlot): BarRenderer<MyFormatter>(plot)

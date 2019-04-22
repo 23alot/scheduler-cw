@@ -28,6 +28,10 @@ class TaskInteractorImpl : TaskInteractor {
         return taskRepository.getTasks()
     }
 
+    override fun getTasks(date: Date): List<Task> {
+        return taskRepository.getTasks(date)
+    }
+
     override fun getTasks(taskStatus: Array<TaskStatus>): Observable<List<Task>> {
         return Observable.create<List<Task>> {
             val intStatus = IntArray(taskStatus.size) {i ->

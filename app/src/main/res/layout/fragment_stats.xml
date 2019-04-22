@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical">
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent" android:layout_height="match_parent">
+    <ScrollView
+            android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <com.androidplot.xy.XYPlot
-        style="@style/APDefacto.Light"
-        android:id="@+id/fragmentStatsPlot"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:title="A Simple XY Plot"
-        app:gridInsetLeft="35dp"
-        app:gridInsetRight="8dp"
-        app:domainLineThickness="0dp"
-        app:rangeLineThickness="0dp"
-        app:rangeTitle="range"
-        app:domainTitle="domain"
-        app:lineLabels="left|bottom" />
-</LinearLayout>
+            <com.androidplot.xy.XYPlot
+                    style="@style/APDefacto.Light"
+                    android:id="@+id/fragmentStatsPlot"
+                    android:layout_width="350dp"
+                    android:layout_height="350dp"
+                    android:layout_gravity="center_horizontal"
+                    app:title="Tasks for last week"
+                    app:domainLineThickness="0dp"
+                    app:gridInsetLeft="35dp"
+                    app:gridInsetRight="10dp"
+                    app:rangeLineThickness="0dp"
+                    app:gridClippingEnabled="false"
+                    app:rangeTitle="Count"
+                    app:domainTitle="Status"
+                    app:lineLabels="left|bottom"/>
+
+            <TextView
+                    android:id="@+id/fragmentStatsTimeSpentTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"/>
+
+            <TextView
+                    android:id="@+id/fragmentStatsTasksDoneTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="You've done:"/>
+
+            <ProgressBar
+                    android:id="@+id/fragmentStatsTasksDonePB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
