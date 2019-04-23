@@ -55,7 +55,7 @@ class StatsFragment : Fragment() {
     }
 
     private fun timeSpent(tasks: List<Task>): String {
-        val result = tasks.sumBy { (it.taskDuration - (it.taskSpent?:0)).toInt() }
+        val result = tasks.sumBy { (it.taskDuration - (it.taskSpent?:0)).toInt() } / 1000000
 
         return if (result > 0) {
             "You've spent $result less than planned"
