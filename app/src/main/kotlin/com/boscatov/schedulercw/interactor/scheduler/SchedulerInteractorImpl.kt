@@ -12,6 +12,7 @@ import com.boscatov.schedulercw.worker.NearestTaskWorker
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 import toothpick.Toothpick
+import java.util.*
 import javax.inject.Inject
 
 class SchedulerInteractorImpl : SchedulerInteractor {
@@ -37,6 +38,7 @@ class SchedulerInteractorImpl : SchedulerInteractor {
             // Вызов ActiveTaskWorker
             val activeTaskWorker = OneTimeWorkRequestBuilder<ActiveTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("ActiveTask", ExistingWorkPolicy.REPLACE, activeTaskWorker)
+            it.onComplete()
         }.subscribeOn(Schedulers.io())
     }
 
@@ -45,9 +47,11 @@ class SchedulerInteractorImpl : SchedulerInteractor {
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.DONE
+            task.taskSpent = System.currentTimeMillis() - (task.taskDateStart?.time?:System.currentTimeMillis())
             taskRepository.updateTask(task)
             val nearestTaskWorker = OneTimeWorkRequestBuilder<NearestTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("CompleteTask", ExistingWorkPolicy.REPLACE, nearestTaskWorker)
+            it.onComplete()
         }.subscribeOn(Schedulers.io())
     }
 
@@ -64,10 +68,15 @@ class SchedulerInteractorImpl : SchedulerInteractor {
         return Completable.create {
             val task = taskRepository.getTask(taskId)
             task.taskStatus = TaskStatus.ABANDONED
+            val calendar = Calendar.getInstance()
+            calendar.time = task.taskDateStart
+            calendar.add(Calendar.DAY_OF_MONTH, 7)
+            task.taskDeadLine = calendar.time
             task.taskDateStart = null
             taskRepository.updateTask(task)
             val nearestTaskWorker = OneTimeWorkRequestBuilder<NearestTaskWorker>().build()
             WorkManager.getInstance().enqueueUniqueWork("AbandonTask", ExistingWorkPolicy.REPLACE, nearestTaskWorker)
+            it.onComplete()
         }.subscribeOn(Schedulers.io())
     }
 

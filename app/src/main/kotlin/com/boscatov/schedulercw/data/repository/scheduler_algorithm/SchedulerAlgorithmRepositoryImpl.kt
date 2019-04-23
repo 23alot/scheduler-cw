@@ -61,10 +61,10 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
             for ((i, reserve) in reserved.withIndex()) {
                 val next = reserved[i]
                 val nextStart = normalizeDate(next.startTime)
-                if (nextStart > desiredTime && i > 0) {
+                if ((nextStart > desiredTime) && (i > 0)) {
                     val previous = reserved[i - 1]
                     val prevEnd = normalizeDate(previous.endTime)
-                    if (desiredTime >= prevEnd && desiredTime + task.duration <= nextStart) {
+                    if ((desiredTime >= prevEnd) && ((desiredTime + task.duration) <= nextStart)) {
                         val dif = desiredTime - prevEnd
                         reserved.add(i, ReservedData(previous.endTime + dif, previous.endTime + dif + task.duration, task))
                         reserved.remove(deadlineTask)
@@ -109,7 +109,7 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
             }
             val curEnd = normalizeDate(currentBest[i].endTime)
             val nextStart = normalizeDate(currentBest[i+1].startTime)
-            if (nextStart - curEnd >= window && currentBest[i].endTime + window < task.deadline) {
+            if (((nextStart - curEnd) >= window) && ((currentBest[i].endTime + window) < task.deadline)) {
                 if (time < nextStart) {
                     if (time > curEnd) {
                         val currentDif = Math.abs(best.startTime - time)

@@ -106,7 +106,7 @@ class StatsFragment : Fragment() {
         fragmentStatsPlot.linesPerRangeLabel = labels.count()
         fragmentStatsPlot.domainStepModel = StepModel(StepMode.INCREMENT_BY_VAL, 1.0)
         fragmentStatsPlot.setRangeLowerBoundary(0, BoundaryMode.FIXED)
-        val maxHeight = Math.max((done as MutableList<Int>).max()!!, (abandon as MutableList<Int>).max()!!)
+        val maxHeight = Math.max((done as MutableList<Int>).max()?:0, (abandon as MutableList<Int>).max()?:0)
         fragmentStatsPlot.setRangeUpperBoundary(maxHeight + 0.5, BoundaryMode.FIXED)
 
         fragmentStatsPlot.graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).format = object : Format() {

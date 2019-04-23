@@ -1,6 +1,5 @@
 package com.boscatov.schedulercw.view.viewmodel.task_list
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.boscatov.schedulercw.data.entity.Task
@@ -35,14 +34,12 @@ class TaskListViewModel : ViewModel() {
     fun loadData() {
         // TODO: Обработать Disposable
         Observable.fromCallable {
-            Log.d("123", "load request")
             taskInteractor.getDateTasks(day.value!!)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { taskList ->
-                Log.d("123", "load complete $taskList")
-                val result = taskList.filter { it.taskStatus == TaskStatus.ACTIVE || it.taskStatus == TaskStatus.DONE || it.taskStatus == TaskStatus.PENDING }
-                Log.d("123", "load complete2 $result")
+                val result =
+                    taskList.filter { it.taskStatus == TaskStatus.ACTIVE || it.taskStatus == TaskStatus.DONE || it.taskStatus == TaskStatus.PENDING }
                 tasks.value = result
             }
     }
@@ -64,14 +61,18 @@ class TaskListViewModel : ViewModel() {
 
     fun onChaosSwipe(position: Int) {
         val task = tasks.value!![position]
-        schedulerInteractor.abandonTaskCompletable(task.taskId).subscribe()
-        loadData()
+        schedulerInteractor.abandonTaskCompletable(task.taskId)
+            .subscribe {
+                loadData()
+            }
     }
 
     fun onDoneSwipe(position: Int) {
         val task = tasks.value!![position]
-        schedulerInteractor.completeTaskCompletable(task.taskId).subscribe()
-        loadData()
+        schedulerInteractor.completeTaskCompletable(task.taskId)
+            .subscribe {
+                loadData()
+            }
     }
 
     fun increaseDate() {

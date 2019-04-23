@@ -59,7 +59,7 @@ class TaskAdapter(val tasks: MutableList<Task>) : RecyclerView.Adapter<TaskAdapt
         }
 
         holder.task.setOnClickListener {
-            clickListener?.onTaskClicked(tasks[position].taskId)
+            clickListener?.onTaskClicked(tasks[holder.adapterPosition].taskId)
         }
 
         holder.task.taskItemEndTimeTV.setText("${tasks[position].taskDuration}")

@@ -38,12 +38,16 @@ class AddParentTaskAdapter(val tasks: MutableList<Task>) :
     override fun onBindViewHolder(holder: AddParentTaskViewHolder, position: Int) {
         holder.task.addProjectItemTV.setText(tasks[position].taskTitle)
         holder.task.setOnClickListener {
-            listener?.onTaskSelect(tasks[position])
+            listener?.onTaskSelect(tasks[holder.adapterPosition])
         }
     }
 
     override fun getItemCount(): Int {
         return tasks.size
+    }
+
+    override fun getItemId(position: Int): Long {
+        return tasks[position].taskId
     }
 
     fun setTasks(tasks: List<Task>) {

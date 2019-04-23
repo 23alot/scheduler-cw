@@ -65,6 +65,7 @@ class AddParentTaskDialogFragment : DialogFragment(), AddParentTaskAdapter.Callb
             }
         })
         dialogAddProjectET.hint = "Task title"
+        adapter.setOnProjectSelectListener(this)
         taskViewModel.onLoadTasks()
     }
 

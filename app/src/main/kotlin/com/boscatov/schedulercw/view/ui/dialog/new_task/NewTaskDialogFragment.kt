@@ -175,6 +175,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
         val calendar = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("dd MMMM, yyyy")
         dialogNewTaskStartDateTextView.setText(dateFormat.format(calendar.time))
+        dialogNewTaskDeadlineDateTV.setText(dateFormat.format(calendar.time))
 
         dialogNewTaskStartDateTextView.setOnClickListener {
             val date = DatePickerDialog(activity, this, year, month, day)
@@ -198,6 +199,7 @@ class NewTaskDialogFragment : DialogFragment(), DatePickerDialog.OnDateSetListen
 
         val timeFormat = SimpleDateFormat("HH:mm")
         dialogNewTaskStartTimeTextView.setText(timeFormat.format(calendar.time))
+        dialogNewTaskDeadlineTimeTV.setText(timeFormat.format(calendar.time))
 
         val spinnerAdapter = ColorChooseAdapter(context!!, R.layout.spinner_color_choose)
         dialogNewTaskColorChooseSpinner.adapter = spinnerAdapter

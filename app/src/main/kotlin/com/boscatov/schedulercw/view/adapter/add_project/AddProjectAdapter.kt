@@ -31,10 +31,14 @@ class AddProjectAdapter(val projects: MutableList<Project>) :
         return AddProjectViewHolder(task)
     }
 
+    override fun getItemId(position: Int): Long {
+        return projects[position].projectId
+    }
+
     override fun onBindViewHolder(holder: AddProjectViewHolder, position: Int) {
         holder.project.addProjectItemTV.setText(projects[position].projectName)
         holder.project.setOnClickListener {
-            listener?.onProjectSelect(projects[position])
+            listener?.onProjectSelect(projects[holder.adapterPosition])
         }
     }
 

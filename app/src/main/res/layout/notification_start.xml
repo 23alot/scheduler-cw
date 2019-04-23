@@ -43,7 +43,7 @@
             android:layout_toStartOf="@id/notificationStartIB"
             android:textAppearance="@style/TextAppearance.Compat.Notification.Time"/>
 
-    <ImageButton
+    <ImageView
             android:id="@+id/notificationStartIB"
             android:layout_width="48dp"
             android:layout_height="48dp"
