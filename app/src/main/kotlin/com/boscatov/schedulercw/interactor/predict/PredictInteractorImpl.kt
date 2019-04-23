@@ -49,7 +49,7 @@ class PredictInteractorImpl @Inject constructor(
         return predictDates
     }
 
-    private fun schedulerAlgorithm(predictDates: List<Pair<Task, List<Long>>>): List<Date> {
+    private fun schedulerAlgorithm(predictDates: List<Pair<Task, List<Long>>>): List<Task> {
         val date = Calendar.getInstance().time
         val existTasks = taskRepository.getTasks(date)
         val tasks: MutableList<SchedulerData> = mutableListOf()
@@ -61,7 +61,8 @@ class PredictInteractorImpl @Inject constructor(
                         pair.first.taskPriority,
                         pair.first.taskDuration * 60 * 1000L,
                         pair.second,
-                        deadline.time
+                        deadline.time,
+                        task = pair.first
                     )
                 )
             }
@@ -76,6 +77,15 @@ class PredictInteractorImpl @Inject constructor(
                 )
             }
         }
-        return schedulerAlgorithmRepository.schedule(tasks, reserved).map { Date(it.resultTime) }
+        val resultTasks = mutableListOf<Task>()
+        schedulerAlgorithmRepository.schedule(tasks, reserved).forEach { data ->
+             data.task?.let {
+                 it.taskDateStart = Date(data.resultTime)
+                 it.taskDeadLine = null
+                 it.taskStatus = TaskStatus.PENDING
+                 resultTasks.add(it)
+             }
+        }
+        return resultTasks
     }
 }

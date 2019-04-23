@@ -42,15 +42,14 @@ class KNN(
         val map = mutableMapOf<Long, Int>()
         for (i in 0 until k) {
             if (i >= distances.count()) break
+
             if (map[distances[i].second] != null) {
-                map[distances[i].second]?.inc()
+                map[distances[i].second] = map[distances[i].second]?.plus(1)?:1
             } else {
                 map[distances[i].second] = 1
             }
         }
-        val dateStart = Calendar.getInstance()
-        dateStart.set(1970, Calendar.JANUARY, 0, 0, 0, 0)
-        val result = map.toList().sortedBy { (_, value) -> value }.map { it.first + dateStart.time.time }
+        val result = map.toList().sortedBy { (_, value) -> value }.map { it.first }
 
         return result
     }

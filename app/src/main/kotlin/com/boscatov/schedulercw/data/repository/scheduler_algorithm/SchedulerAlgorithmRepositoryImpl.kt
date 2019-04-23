@@ -1,5 +1,6 @@
 package com.boscatov.schedulercw.data.repository.scheduler_algorithm
 
+import com.boscatov.schedulercw.data.entity.Task
 import com.boscatov.schedulercw.data.entity.TaskDate
 import java.util.*
 import javax.inject.Inject
@@ -14,6 +15,9 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
         data.addAll(tasks)
         val reserve = mutableListOf<ReservedData>()
         reserve.addAll(reserved)
+        // Add false task that means start time
+        val cal = Calendar.getInstance()
+        reserve.add(0, ReservedData(cal.time.time, cal.time.time))
         reserve.sortBy { it.startTime }
         val comparator = SchedulerComparator()
         data.sortWith(comparator)
@@ -49,21 +53,29 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
             return true
         }
         val task = tasks[pos]
+        val deadlineTask = ReservedData(task.deadline, task.deadline + 1)
+        if (reserved.last().endTime < deadlineTask.startTime) {
+            reserved.add(deadlineTask)
+        }
         for (desiredTime in task.desiredTimes) {
             for ((i, reserve) in reserved.withIndex()) {
-                if (reserve.startTime > desiredTime && i > 0) {
+                val next = reserved[i]
+                val nextStart = normalizeDate(next.startTime)
+                if (nextStart > desiredTime && i > 0) {
                     val previous = reserved[i - 1]
-                    val next = reserved[i]
                     val prevEnd = normalizeDate(previous.endTime)
-                    val nextStart = normalizeDate(next.startTime)
                     if (desiredTime >= prevEnd && desiredTime + task.duration <= nextStart) {
                         val dif = desiredTime - prevEnd
                         reserved.add(i, ReservedData(previous.endTime + dif, previous.endTime + dif + task.duration, task))
+                        reserved.remove(deadlineTask)
                         if (predictTime(pos + 1, tasks, reserved, currentBest)) {
                             task.resultTime = previous.endTime + dif
                             return true
                         } else {
                             reserved.removeAt(i)
+                            if (reserved.last().endTime < deadlineTask.startTime) {
+                                reserved.add(deadlineTask)
+                            }
                             break
                         }
                     }
@@ -90,14 +102,14 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
         val task = tasks[pos]
         val time = task.desiredTimes[0]
         val window = task.duration
-        var best = ReservedData(-5, -5)
+        var best = ReservedData(-200000000000, -200000000000)
         for ((i, _) in currentBest.withIndex()) {
             if (i + 1 == currentBest.count()) {
                 continue
             }
             val curEnd = normalizeDate(currentBest[i].endTime)
             val nextStart = normalizeDate(currentBest[i+1].startTime)
-            if (nextStart - curEnd >= window && currentBest[i + 1].startTime < task.deadline) {
+            if (nextStart - curEnd >= window && currentBest[i].endTime + window < task.deadline) {
                 if (time < nextStart) {
                     if (time > curEnd) {
                         val currentDif = Math.abs(best.startTime - time)
@@ -127,7 +139,7 @@ class SchedulerAlgorithmRepositoryImpl @Inject constructor() : SchedulerAlgorith
             }
         }
 
-        return if (!(best.startTime == 0L && best.endTime == 0L)) {
+        return if (!(best.startTime == 200000000000 && best.endTime == 200000000000)) {
             val index = currentBest.indexOfFirst { it.startTime >= best.endTime }
             currentBest.add(index, best)
 
@@ -173,5 +185,6 @@ data class SchedulerData(
     val duration: Long,
     val desiredTimes: List<Long>,
     val deadline: Long,
-    var resultTime: Long = 0
+    var resultTime: Long = 0,
+    var task: Task? = null
 )
